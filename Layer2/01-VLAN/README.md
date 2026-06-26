@@ -4,9 +4,9 @@
 This lab demonstrates Local VLAN Segmentation using a single multilayer/layer 2 switch and three host PCs. The primary objective is to verify that hosts in the same VLAN can communicate, while hosts in different VLANs are isolated at Layer 2.
 
 * **VLAN 10:** (Management)
-* **VLAN 20:** PC-2 (Sales)
-* **VLAN 30:** PC-3 (Engineering)
-
+* **VLAN 20:** PC-2 (Engineering)
+* **VLAN 30:** PC-3 (Sales)
+* **VLAN 30:** PC-1 (Sales)
 ---
 
 ## 2. IP Addressing & VLAN Mapping 
