@@ -27,7 +27,7 @@ Below is the verified CLI configuration from the Switch to initialize VLANs and 
 ! 1. Create VLANs
 Switch# configure terminal
 Switch(config)# vlan 10
-Switch(config-vlan)# name MGMT
+Switch(config-vlan)# name Management
 Switch(config-vlan)# vlan 20
 Switch(config-vlan)# name Engineering
 Switch(config-vlan)# vlan 30
