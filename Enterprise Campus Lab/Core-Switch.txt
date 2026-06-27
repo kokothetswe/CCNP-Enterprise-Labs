@@ -113,12 +113,4 @@ Po2         on               802.1q         trunking      997
 Po3         on               802.1q         trunking      998
 
 end
-
-end
-
-
-
-
-
-end
 write memory
