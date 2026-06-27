@@ -44,4 +44,15 @@ Group  Port-channel  Protocol    Ports
 ------+-------------+-----------+-----------------------------------------------
 1      Po1(SU)         LACP      Et0/0(P)    Et0/1(P)    
 
+Port        Mode             Encapsulation  Status        Native vlan
+Po1         on               802.1q         trunking      999
+
+Port        Vlans allowed on trunk
+Po1         10-50
+
+Port        Vlans allowed and active in management domain
+Po1         10,20,30,40,50
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Po1         10,20,30,40
 
