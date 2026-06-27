@@ -1,0 +1,50 @@
+hostname Core-SW
+
+vlan 10
+ name Management
+
+vlan 20
+ name Engineering
+
+vlan 30
+ name Sales
+
+vlan 40
+ name CCTV
+
+vlan 50
+ name Guest
+
+interface e0/0
+ description LACP to Access-SW1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+
+interface e0/1
+ description LACP to Access-SW1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+
+interface Port-channel1
+ description LACP to Access-SW1
+ switchport mode trunk
+
+!
+
+spanning-tree mode rapid-pvst
+spanning-tree vlan 10-50 root primary
+vtp doamin CCNP.com
+vtp ver 2
+vtp mo ser
+vtp pass ccnpvtp
+
+int po1
+spanning-tree link point-to-point
+spannig-tree guard root
+lacp fast-switch over
+
+
+end
+write memory
