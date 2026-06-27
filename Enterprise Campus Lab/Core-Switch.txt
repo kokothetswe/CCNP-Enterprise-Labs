@@ -76,10 +76,15 @@ description Static Etherchannel to Access-Sw3
 
 spanning-tree mode rapid-pvst
 spanning-tree vlan 10-50 root primary
+udld enable
+udld aggressive
 vtp doamin CCNP.com
 vtp ver 2
 vtp mo ser
-vtp pass ccnpvtpinterface Port-channel1
+vtp pass ccnpvtp
+vtp pruning enable
+
+interface Port-channel1
  switchport trunk allowed vlan 10-50
  switchport trunk encapsulation dot1q
  switchport trunk native vlan 999
