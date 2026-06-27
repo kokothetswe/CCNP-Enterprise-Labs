@@ -1,0 +1,47 @@
+Access-Switch1(config)#spanning-tree mode rapid-pvst
+spanning-tree portfast edge default
+spanning-tree portfast edge bpduguard default
+spanning-tree portfast edge bpdufilter default
+interface Ethernet0/0
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode passive
+!         
+interface Ethernet0/1
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode passive
+interface Port-channel1
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ switchport nonegotiate
+ lacp fast-switchover
+ spanning-tree link-type point-to-point
+ spanning-tree guard loop
+
+interface Vlan10
+ ip address 192.168.10.3 255.255.255.0
+         
+interface Ethernet0/2
+ switchport access vlan 50
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+vtp domain nam CCNP.com
+vtp ver 2
+vtp mo cl
+vtp pass ccnpvtp
+#sh etherch sum
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         LACP      Et0/0(P)    Et0/1(P)    
+
+
