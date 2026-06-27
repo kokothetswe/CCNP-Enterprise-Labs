@@ -22,3 +22,15 @@ Port-Channel ID,Protocol,Connected Devices,Active Interfaces,Description
 Po1,LACP (Link Aggregation),Core-SW <---> Access-Switch1,"e0/1, e0/3",Dynamic Negotiation (Active/Passive)
 Po2,PAgP (Cisco Proprietary),Core-SW <---> Access-Switch2,"e0/2, e1/0",Cisco Dynamic Bundle (Desirable/Auto)
 Po3,Static (On Mode),Core-SW <---> Access-Switch3,"e1/2, e1/1",Unconditional EtherChannel Block
+## Configuration
+-Core-Sw
+- Access-SW1
+- Access-SW2
+- Access-SW3
+
+## Verification
+show vlan brief
+show interfaces trunk
+show etherchannel summary
+show spanning-tree
+show vtp status
