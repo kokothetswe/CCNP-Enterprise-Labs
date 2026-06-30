@@ -1,0 +1,201 @@
+Core-SW>
+Core-SW>en
+Core-SW#sh span
+Core-SW#sh vlan bri         
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Et0/0, Et1/3
+10   Management                       active    
+20   Engineering                      active    
+30   Sales                            active    
+40   CCTV                             active    
+50   Guest Wifi                       active    
+1002 fddi-default                     act/unsup 
+1003 trcrf-default                    act/unsup 
+1004 fddinet-default                  act/unsup 
+1005 trbrf-default                    act/unsup 
+Core-SW#sh vtp status 
+VTP Version capable             : 1 to 3
+VTP version running             : 2
+VTP Domain Name                 : CCNP.com
+VTP Pruning Mode                : Enabled
+VTP Traps Generation            : Disabled
+Device ID                       : aabb.cc80.0100
+Configuration last modified by 0.0.0.0 at 6-27-26 09:12:02
+Local updater ID is 192.168.10.2 on interface Vl10 (lowest numbered VLAN interface found)
+
+Feature VLAN:
+--------------
+VTP Operating Mode                : Server
+Maximum VLANs supported locally   : 1005
+Number of existing VLANs          : 10
+Configuration Revision            : 9
+MD5 digest                        : 0xED 0x7B 0xE6 0xE9 0x64 0x38 0x81 0xC9 
+                                    0x06 0x4D 0x2E 0x1F 0x72 0x57 0xDF 0x40 
+Core-SW#sh int tr
+
+Port        Mode             Encapsulation  Status        Native vlan
+Po1         on               802.1q         trunking      999
+Po2         on               802.1q         trunking      997
+Po3         on               802.1q         trunking      998
+
+Port        Vlans allowed on trunk
+Po1         10-50
+Po2         10-50
+Po3         10-50
+
+Port        Vlans allowed and active in management domain
+Po1         10,20,30,40,50
+Po2         10,20,30,40,50
+Po3         10,20,30,40,50
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Po1         10,50
+Po2         10,30,40Core-SW#sh spanning-tree 
+
+VLAN0001
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    32769
+             Address     aabb.cc00.0100
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32769  (priority 32768 sys-id-ext 1)
+             Address     aabb.cc00.0100
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et0/0               Desg FWD 100       128.1    P2p 
+
+
+          
+VLAN0010  
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    24586
+             Address     aabb.cc00.0100
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+          
+  Bridge ID  Priority    24586  (priority 24576 sys-id-ext 10)
+             Address     aabb.cc00.0100
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+          
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Desg FWD 56        128.65   P2p 
+Po2                 Desg FWD 56        128.66   P2p 
+Po3                 Desg FWD 56        128.67   P2p 
+          
+          
+          
+VLAN0020  
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    24596
+             Address     aabb.cc00.0100
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+          
+  Bridge ID  Priority    24596  (priority 24576 sys-id-ext 20)
+             Address     aabb.cc00.0100
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+          
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Desg FWD 56        128.65   P2p 
+Po2                 Desg FWD 56        128.66   P2p 
+Po3                 Desg FWD 56        128.67   P2p 
+          
+          
+          
+VLAN0030  
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    24606
+             Address     aabb.cc00.0100
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+          
+  Bridge ID  Priority    24606  (priority 24576 sys-id-ext 30)
+             Address     aabb.cc00.0100
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+          
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Desg FWD 56        128.65   P2p 
+ --More-- 
+*Jun 27 11:20:06.041: %CDP-4-DUPLEX_MISMATCH: duplex mismatch discovered on Ethernet0/1 (not half duplex), with Access-Switch1 Ethernet0/0 (half duplex).
+Po2                 Desg FWD 56        128.66   P2p 
+Po3                 Desg FWD 56        128.67   P2p 
+          
+          
+          
+VLAN0040  
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    24616
+             Address     aabb.cc00.0100
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+          
+  Bridge ID  Priority    24616  (priority 24576 sys-id-ext 40)
+             Address     aabb.cc00.0100
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+          
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Desg FWD 56        128.65   P2p 
+Po2                 Desg FWD 56        128.66   P2p 
+Po3                 Desg FWD 56        128.67   P2p 
+          
+          
+          
+VLAN0050  
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    24626
+             Address     aabb.cc00.0100
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+          
+  Bridge ID  Priority    24626  (priority 24576 sys-id-ext 50)
+             Address     aabb.cc00.0100
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+          
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Desg FWD 56        128.65   P2p 
+Po2                 Desg FWD 56        128.66   P2p 
+Po3                 Desg FWD 56        128.67   P2p 
+
+Po3         10,20
+
+  Core-SW#sh etherch sum
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      N - not in use, no aggregation
+        f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        m - not in use, port not aggregated due to minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+        A - formed by Auto LAG
+
+
+Number of channel-groups in use: 3
+Number of aggregators:           3
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         LACP      Et0/1(P)    Et0/3(P)    
+2      Po2(SU)         PAgP      Et0/2(P)    Et1/0(P)    
+3      Po3(SU)          -        Et1/1(P)    Et1/2(P)    

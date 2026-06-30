@@ -1,0 +1,82 @@
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Et1/1, Et1/2, Et1/3
+10   Management                       active    Et1/0
+20   Engineering                      active    Et0/2, Et0/3
+30   Sales                            active    
+40   CCTV                             active    
+50   Guest Wifi                       active    
+1002 fddi-default                     act/unsup 
+1003 trcrf-default                    act/unsup 
+1004 fddinet-default                  act/unsup 
+1005 trbrf-default                    act/unsup 
+Access-Switch3(config)#do sh vtp status 
+VTP Version capable             : 1 to 3
+VTP version running             : 2
+VTP Domain Name                 : CCNP.com
+VTP Pruning Mode                : Enabled
+VTP Traps Generation            : Disabled
+Device ID                       : aabb.cc80.0400
+Configuration last modified by 0.0.0.0 at 6-27-26 09:12:02
+
+Feature VLAN:
+--------------
+VTP Operating Mode                : Client
+spanning-tree mode rapid-pvst
+spanning-tree portfast edge default
+spanning-tree portfast edge bpduguard default
+spanning-tree portfast edge bpdufilter default
+Access-Switch3(config) # udld en
+Access-Switch3(config)# udld aggressive
+Access-Switch3(config)# do sh etherch sum
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+3      Po3(SU)          -        Et0/0(P)    Et0/1(P)    
+
+!
+interface Ethernet0/0
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 3 mode on
+end
+!
+interface Ethernet0/1
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 3 mode on
+end
+
+
+
+interface Port-channel3
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ spanning-tree link-type point-to-point
+ spanning-tree guard loop
+end
+
+interface Ethernet0/2
+ switchport access vlan 20
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+end
+
+!
+interface Ethernet1/0
+ switchport access vlan 10
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+end
+write memory

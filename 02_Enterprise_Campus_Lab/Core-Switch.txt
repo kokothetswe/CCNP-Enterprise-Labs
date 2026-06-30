@@ -1,0 +1,121 @@
+hostname Core-SW
+
+vlan 10
+ name Management
+
+vlan 20
+ name Engineering
+
+vlan 30
+ name Sales
+
+vlan 40
+ name CCTV
+
+vlan 50
+ name Guest
+
+interface e0/3
+ description LACP to Access-SW1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+
+interface e0/1
+ description LACP to Access-SW1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 1 mode active
+
+interface Port-channel1
+ description LACP to Access-SW1
+ switchport mode trunk
+
+!
+interface Ethernet0/2
+description PAGP to Access-Sw2
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 997
+ switchport mode trunk
+ switchport nonegotiate
+ duplex full
+ channel-group 2 mode desirable
+!
+interface Ethernet1/0
+description PAGP to Access-Sw2
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 997
+ switchport mode trunk
+ switchport nonegotiate
+ duplex full
+ channel-group 2 mode desirable
+interface Ethernet1/1
+description Static Etherchannel to Access-Sw3
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ duplex full
+ channel-group 3 mode on
+interface Ethernet1/2
+description Static Etherchannel to Access-Sw3
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ duplex full
+ channel-group 3 mode on
+
+
+
+!
+
+spanning-tree mode rapid-pvst
+spanning-tree vlan 10-50 root primary
+udld enable
+udld aggressive
+vtp doamin CCNP.com
+vtp ver 2
+vtp mo ser
+vtp pass ccnpvtp
+vtp pruning enable
+
+interface Port-channel1
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ switchport nonegotiate
+ lacp fast-switchover
+ spanning-tree link-type point-to-point
+ spanning-tree guard root
+!
+interface Port-channel2
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 997
+ switchport mode trunk
+ switchport nonegotiate
+ spanning-tree link-type point-to-point
+ spanning-tree guard root
+
+!
+interface Port-channel3
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 998
+ switchport mode trunk
+ switchport nonegotiate
+ spanning-tree link-type point-to-point
+ spanning-tree guard root
+Port        Mode             Encapsulation  Status        Native vlan
+Po1         on               802.1q         trunking      999
+Po2         on               802.1q         trunking      997
+Po3         on               802.1q         trunking      998
+
+end
+write memory

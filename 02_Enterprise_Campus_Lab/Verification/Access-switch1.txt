@@ -1,0 +1,207 @@
+Access-Switch1(config)#do sh vl br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Et0/3
+10   Management                       active    
+20   Engineering                      active    
+30   Sales                            active    
+40   CCTV                             active    
+50   Guest Wifi                       active    Et0/2
+1002 fddi-default                     act/unsup 
+1003 trcrf-default                    act/unsup 
+1004 fddinet-default                  act/unsup 
+1005 trbrf-default                    act/unsup 
+Access-Switch1(config)#do sh spanning-tree 
+
+VLAN0010
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    24586
+             Address     aabb.cc00.0100
+             Cost        56
+             Port        65 (Port-channel1)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32778  (priority 32768 sys-id-ext 10)
+             Address     aabb.cc00.0300
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Root FWD 56        128.65   P2p 
+
+
+          
+VLAN0020
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    24596
+             Address     aabb.cc00.0100
+             Cost        56
+             Port        65 (Port-channel1)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32788  (priority 32768 sys-id-ext 20)
+             Address     aabb.cc00.0300
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Root FWD 56        128.65   P2p 
+
+
+          
+VLAN0030
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    24606
+             Address     aabb.cc00.0100
+             Cost        56
+             Port        65 (Port-channel1)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32798  (priority 32768 sys-id-ext 30)
+             Address     aabb.cc00.0300
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Root FWD 56        128.65   P2p 
+
+
+          
+VLAN0040
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    24616
+             Address     aabb.cc00.0100
+             Cost        56
+             Port        65 (Port-channel1)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32808  (priority 32768 sys-id-ext 40)
+             Address     aabb.cc00.0300
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Root FWD 56        128.65   P2p 
+
+
+          
+VLAN0050
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    24626
+             Address     aabb.cc00.0100
+             Cost        56
+             Port        65 (Port-channel1)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32818  (priority 32768 sys-id-ext 50)
+             Address     aabb.cc00.0300
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et0/2               Desg FWD 100       128.3    Shr Edge 
+Po1                 Root FWD 56        128.65   P2p 
+Access-Switch1(config)#do sh int tr
+
+Port        Mode             Encapsulation  Status        Native vlan
+Po1         on               802.1q         trunking      999
+
+Port        Vlans allowed on trunk
+Po1         10-50
+
+Port        Vlans allowed and active in management domain
+Po1         10,20,30,40,50
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Po1         10,20,30,40
+Access-Switch1(config)#do sh etherch sum
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      N - not in use, no aggregation
+        f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        m - not in use, port not aggregated due to minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+        A - formed by Auto LAG
+
+
+Number of channel-groups in use: 1
+Number of aggregators:           1
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)         LACP      Et0/0(P)    Et0/1(P)   
+Access-Switch1(config)# do sh vtp status 
+VTP Version capable             : 1 to 3
+VTP version running             : 2
+VTP Domain Name                 : CCNP.com
+VTP Pruning Mode                : Enabled
+VTP Traps Generation            : Disabled
+Device ID                       : aabb.cc80.0300
+Configuration last modified by 0.0.0.0 at 6-27-26 09:12:02
+
+Feature VLAN:
+--------------
+VTP Operating Mode                : Client
+Maximum VLANs supported locally   : 1005
+Number of existing VLANs          : 10
+Configuration Revision            : 9
+MD5 digest                        : 0xED 0x7B 0xE6 0xE9 0x64 0x38 0x81 0xC9 
+                                    0x06 0x4D 0x2E 0x1F 0x72 0x57 0xDF 0x40 
+
+Access-Switch1(config)#do sh run int e0/0 
+Building configuration...
+
+Current configuration : 215 bytes
+!
+interface Ethernet0/0
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode passive
+end
+Access-Switch1(config)#do sh run int e0/1
+Building configuration...
+
+Current configuration : 215 bytes
+!
+interface Ethernet0/1
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode passive
+end
+
+Access-Switch1(config)#do sh run int po1
+Building configuration...
+
+Current configuration : 275 bytes
+!
+interface Port-channel1
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ switchport nonegotiate
+ lacp fast-switchover
+ spanning-tree link-type point-to-point
+ spanning-tree guard loop
+end
+
+

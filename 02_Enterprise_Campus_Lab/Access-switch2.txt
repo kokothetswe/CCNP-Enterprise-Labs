@@ -1,0 +1,91 @@
+Access-Switch2#sh vtp status
+VTP Version capable             : 1 to 3
+VTP version running             : 2
+VTP Domain Name                 : CCNP.com
+VTP Pruning Mode                : Enabled
+VTP Traps Generation            : Disabled
+Device ID                       : aabb.cc80.0200
+Configuration last modified by 0.0.0.0 at 6-27-26 09:12:02
+
+Feature VLAN:
+--------------
+VTP Operating Mode                : Client
+Maximum VLANs supported locally   : 1005
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Et1/3, Et2/0, Et2/1, Et2/2
+                                                Et2/3
+10   Management                       active    
+20   Engineering                      active    
+30   Sales                            active    Et1/1, Et1/2
+40   CCTV                             active    Et0/2, Et0/3, Et1/0
+50   Guest Wifi                       active    
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+2      Po2(SU)         PAgP      Et0/0(P)    Et0/1(P)   
+!
+interface Ethernet0/0
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 997
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 2 mode desirable
+end
+interface Ethernet0/1
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 997
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 2 mode desirable
+endinterface Port-channel2
+ switchport trunk allowed vlan 10-50
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 997
+ switchport mode trunk
+ switchport nonegotiate
+ spanning-tree link-type point-to-point
+ spanning-tree guard loop
+end
+Port        Mode             Encapsulation  Status        Native vlan
+Po2         on               802.1q         trunking      997
+
+Port        Vlans allowed on trunk
+Po2         10-50
+
+Port        Vlans allowed and active in management domain
+Po2         10,20,30,40,50
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Po2         10,20,50
+Access-Switch2#spanning-tree mode rapid-pvst
+Access-Switch2#sspanning-tree portfast edge default
+Access-Switch2#sspanning-tree portfast edge bpduguard default
+Access-Switch2#sspanning-tree portfast edge bpdufilter default
+interface Ethernet0/2
+ switchport access vlan 40
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+end
+interface Ethernet0/3
+ switchport access vlan 40
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+end
+!
+interface Ethernet1/1
+ switchport access vlan 30
+ switchport mode access
+ switchport nonegotiate
+ spanning-tree portfast edge
+end
+
+write memory
+
+
+
