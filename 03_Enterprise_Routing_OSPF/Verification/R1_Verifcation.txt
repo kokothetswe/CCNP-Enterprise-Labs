@@ -103,6 +103,21 @@ Ethernet0/0 is up, line protocol is up
   Last flood scan length is 1, maximum is 1
   Last flood scan time is 0 msec, maximum is 0 msec
   Neighbor Count is 1, Adjacent neighbor count is 1 
+
+
+
+
+verification NAT
+R1#sh ip nat tr
+Pro Inside global      Inside local       Outside local      Outside global
+udp 197.0.0.2:49242    10.0.2.11:49242    4.4.2.2:53         4.4.2.2:53
+udp 197.0.0.2:49242    10.0.2.11:49242    8.8.8.8:53         8.8.8.8:53
+
+
+
+
+
+
     Adjacent with neighbor 1.1.1.1
   Suppress hello for 0 neighbor(s)
   Cryptographic authentication enabled
