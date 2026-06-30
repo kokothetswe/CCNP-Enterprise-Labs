@@ -1,0 +1,168 @@
+#Configuration on Distribution-SW2 L3Channel
+
+en
+conf t
+int range e0/0-1 
+sh
+no sw
+channel-gr 10 mo act
+sh
+int range e0/0-1
+no shut
+int po 10
+no sw 
+ip add 192.168.255.2  255.255.255.252
+no shut
+des Ds1_Ds2 L3Channel
+
+#configuration Distribution-SW2_AS1 on Etherchannel and Trunking Dot1q
+
+int range e1/0-1
+sh
+channel-gr 13 mo act 
+sh
+sw tr en do
+sw mo tr
+sw tr all vlan 2020-2023
+sw non
+sw tr nat vlan 997
+no shut
+int range e1/0-1
+no shut
+exit
+ #Configuration Distribution-SW2_AS2 on Etherchannel and Trunking Dot1q
+int range e0/2-3
+sh
+channel-gr 14 mo act
+sh
+sw tr en do
+sw mo tr
+sw tr all vl 2020-2023
+sw non
+sw tr nat vlan 996
+no shut
+int range e0/2-3
+no shut
+exit
+
+# Configuration VTP on Distribution-SW2
+vtp domain lab.com
+vtp version 3
+vtp mo cli 
+vtp mo cli mst
+vtp pass ccnpvtp hid
+
+#do sh vtp status
+# do sh vtp pass
+# do sh vtp device
+
+#Configuration Spanning-tree mst on Distribution-SW2
+spanning-tree mo mst
+spanning-tree mst 1 pri	4096
+spanning-tree mst 2 pri 0
+
+# do sh spanning-tree mst 
+# do sh spanning-tree mst conf dig
+int po13
+spanning-tree link point-to-p
+
+lacp fast
+int po14
+spanning-tree link point-to-p
+# do sh spanning-tree mst 1 
+# do sh spanning-tree mst 2
+#Configuration Intervlan on Distribution-SW2
+ip routing
+int vlan 2020
+ip add 10.0.0.2  255.255.255.0
+no shut
+des Engineering
+int vlan 2021
+ip add 10.0.1.2  255.255.255.0
+no shut
+des Sales
+int vlan 2022
+ip add 10.0.2.2  255.255.255.0
+no shut
+des Maketing 
+int vlan 2023
+ip add 10.0.3.2  255.255.255.0
+no shut
+des IT-DHCP
+#configuration FHRP on Distribution-SW2
+int vlan 2020
+stand ver 2
+stand 1 ip 10.0.0.3
+stan 1 pre 
+stan 1 pri 150
+stan 1 timer 1 3
+stan 1 authen md5 key-st ccnphsrp
+int vlan 2021
+stand ver 2
+stand 2 ip 10.0.1.3
+stan 2 pre 
+stan 2 pri 150
+stan 2 timer 1 3
+stan 2 authen md5 key-st ccnphsrp
+int vlan 2022
+stand ver 2
+stand 3 ip 10.0.2.3
+stan 3 pre 
+stan 3 pri 200
+stan 3 timer 1 3
+stan 3 authen md5 key-st ccnphsrp
+int vlan 2023
+stand ver 2
+stand 4 ip 10.0.3.3
+stan 4 pre 
+stan 4 pri 200
+stan 4 timer 1 3
+stan 4 authen md5 key-st ccnphsrp
+#verification
+do sh stan br
+#Assign IP Address on Distribution-SW2
+do sh ip int br | ex unas
+int e1/2
+no sw
+ip add 10.0.255.6 255.255.255.252
+no shut
+des Uplink_Coresw
+int loo0
+ip add 10.0.254.2 255.255.255.255 
+no shut
+des (Router-id)
+#Configuration Relay Agent on DS2_for IT-DHCP SVR 
+int range vlan 2020-2022
+ip helper-address 10.0.3.10
+#
+#Routing OSPF
+router ospf 10
+ router-id 10.0.254.2
+ passive-interface default
+ no passive-interface Ethernet1/2
+ no passive-interface Port-channel10
+ network 10.0.0.0 0.0.3.255 area 1
+ network 10.0.255.6 0.0.0.0 area 1
+ network 192.168.255.2 0.0.0.0 area 1
+interface Ethernet1/2
+ description Uplink_Coresw
+ no switchport
+ ip address 10.0.255.6 255.255.255.252
+ ip ospf authentication key-chain D2
+ ip ospf network point-to-point
+ ip ospf dead-interval 3
+ ip ospf hello-interval 1
+end
+interface Port-channel10
+ description Ds1_Ds2 L3Channel
+ no switchport
+ ip address 192.168.255.2 255.255.255.252
+ ip ospf authentication key-chain D2
+ ip ospf network point-to-point
+ ip ospf dead-interval 3
+ ip ospf hello-interval 1
+end
+
+
+
+
