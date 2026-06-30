@@ -35,7 +35,7 @@ Default Route & WAN: Static default routing injected from R1/R2 to Multi-homed I
 4. Advanced Traffic Engineering & Policy Filtering
 Access Control Lists (ACLs): Infrastructure protection, securing SSH access across all devices, and managing IT Department policies.
 
-Prefix-Lists: Exact network matching based on prefix length for routing updates.
+Prefix-Lists: Exact network matching based on prefix length for routing updates and Default route Only.
 
 Distribute-Lists: Filtering inbound/outbound routing updates inside OSPF processes.
 By the Way !
