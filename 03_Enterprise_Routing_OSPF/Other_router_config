@@ -1,0 +1,34 @@
+# ISP1 and ISP2 and ISP3 Configuration
+# ISP1
+int e0/0
+ip add 197.0.0.1 255.255.255.252
+no shut
+des Downlink_Custom1
+int lo9
+ip add 8.8.8.8 255.255.255.255
+no shut
+do wr
+# ISP2
+int e0/1
+ip add 100.0.88.1 255.255.255.252
+no shut
+des Downlink_Custom1
+int e0/0
+ip add 198.0.0.1 255.255.255.252
+no shut
+des Downlink_Custom2
+int lo9
+ip add 8.8.8.8 255.255.255.255
+no shut
+exit
+do wr
+ #ISP3
+ int e0/0
+ ip add 196.0.0.1 255.255.255.252
+ no shut
+ des Downlink_Custom1
+ int lo9
+ ip add 8.8.8.8 255.255.255.255
+ no shut
+exit
+do wr
