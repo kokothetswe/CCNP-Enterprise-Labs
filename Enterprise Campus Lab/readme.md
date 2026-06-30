@@ -1,4 +1,4 @@
-# Enterprise Campus Lab
+# Enterprise-Campus-Lab
 
 ## Objectives
 
