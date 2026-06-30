@@ -1,1 +1,43 @@
+Enterprise Multi-Area OSPF & Advanced Infrastructure Lab
+Welcome to the Advanced Enterprise Network Simulation Lab. This project demonstrates a highly available, scalable, and secure enterprise network topology integrating Layer 2 redundancy, Layer 3 multi-area routing, and granular traffic filtering.
+
+📌 Network Topology
+Below is the network design used for this lab simulation (Referenced from Screenshot from 2026-06-29 11-14-18.png):
+
+🛠️ Implemented Technologies & Protocols
+1. Layer 2 Infrastructure & Redundancy
+VLANs & Trunking: Broadcast domain separation and 802.1Q trunking across Access and Distribution layers.
+
+EtherChannel: Link aggregation (LACP/PAgP) between switches to increase bandwidth and provide link redundancy.Ds1 and Ds2 between L3 Etherchannel bes int e1/2 down Neighbor between with portchannel-10.
+
+Spanning Tree Protocol (MST): Multiple Spanning Tree (MST) implementation to optimize load-balancing per group of VLANs and prevent Layer 2 loops.
+
+2. First Hop Redundancy Protocols (FHRP)
+HSRP (Hot Standby Router Protocol): Active/Standby gateway redundancy deployed in the Left Segment (VLAN 2020 - 2023).
+
+VRRP (Virtual Router Redundancy Protocol): Master/Backup open-standard gateway redundancy deployed in the Right Segment (VLAN 10 - 13).
+
+3. Layer 3 Routing & OSPF Multi-Area Design
+OSPF Area 0 (Core): Central Core Switch (CS) connecting all multi-area boundaries.network type with P2P.
+
+OSPF Area Types (LSA Tuning):
+
+
+
+Area 1 and 2 (Totally Stubby): Restricting all summary and external LSAs (Type 3, 4, 5) .
+
+Area 5 & Area 6 (Virtual-Link): Transit area handling via OSPF Virtual-Link to connect Area 6 (DMZ-Zone) back to Area 0.
+
+LSA Type Mastery: Verification and filtering of LSA Types 1, 2, 3, 4, 5, and 7 across the topology.
+
+Default Route & WAN: Static default routing injected from R1/R2 to Multi-homed ISPs.
+
+4. Advanced Traffic Engineering & Policy Filtering
+Access Control Lists (ACLs): Infrastructure protection, securing SSH access across all devices, and managing IT Department policies.
+
+Prefix-Lists: Exact network matching based on prefix length for routing updates.
+
+Distribute-Lists: Filtering inbound/outbound routing updates inside OSPF processes.
+By the Way !
+This lab is in highly Redundancy and Traffic Engineering with using cost or bandwidth can be use changeable metric (E1/E2 or cost and Bandwidth)
 
