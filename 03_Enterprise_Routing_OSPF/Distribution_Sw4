@@ -1,0 +1,166 @@
+#configuration Distribution SW4 on Static Etherchannel and Trunk
+en
+conf t
+int range e0/0-1
+sh
+channel-gr 1 mo on
+sw tr en do
+sw mo tr
+sw tr all vl 10-13
+sw non
+sw tr nat vl 999
+no shut
+
+#configuration DS4-As3
+int rang e1/0-1
+sh
+duplex full
+channel-gr 4 mo de
+sh
+sw tr en do
+sw mo tr
+sw tr all vl 10-13
+sw non
+sw tr nat vl 999
+no shut
+exit
+
+#configuration Ds4-AS4
+int range e0/2-3
+duplex full
+sh
+channel-gr 5 mo de
+shut
+sw  tr en do
+sw mo tr
+sw tr all vl 10-13
+sw non
+sw tr nat vlan 999
+sw non
+no shut
+exit
+do wr
+#configure VTP 
+vtp domain lab.com
+vtp ver 2
+vtp mo cli
+vtp pass ccnpvtp
+#Spanning-Tree(Rpvst)Configuration
+spanning-tree mode rap
+spanning-tree vlan 10,11 pri 4996
+spanning-tree vlan 12,13 pri 0
+#verfication
+do sh span vlan 10
+int po1
+ spanning-tree link-type point-to-point
+ spanning-tree guard loop
+int po4
+ spanning-tree link-type point-to-point
+ spanning-tree guard root
+int po5
+ spanning-tree link-type point-to-point
+ spanning-tree guard root
+exit
+do sh spanning-tree vlan 10,11,12,13
+do wr
+udld en
+udld agg
+spanning-tree pathcost method long 
+#config Inter vlan Routing
+ip routing 
+int vlan 10
+ip add 10.0.4.2 255.255.255.0
+no shut
+des HR
+int vlan 11
+ip add 10.0.5.2 255.255.255.0
+no shut
+des Admin
+int vlan 12
+ip add 10.0.6.2 255.255.255.0
+no shut
+des Cashier
+int vlan 13
+ip add 10.0.7.2 255.255.255.0
+no shut
+des Warehouse
+do sh ip int br | ex unas
+#config VRRP
+fhrp version vrrp v2
+int vlan 10
+vrrp 1 ip 10.0.4.3
+vrrp 1 pre
+vrrp 1 pri 150
+vrrp 1 timer ad 1 
+vrrp 1 authe	text ccnpvrrp 
+int vlan 11
+vrrp 2 ip 10.0.5.3
+vrrp 2  pre
+vrrp 2  pri 150
+vrrp 2  timer ad 1 
+vrrp 2  authe	text ccnpvrrp 
+int vlan 12
+vrrp 3 ip 10.0.6.3
+vrrp 3  pre
+vrrp 3  pri 200
+vrrp 3  timer ad 1 
+vrrp 3  authe	text ccnpvrrp 
+int vlan 13
+vrrp 4 ip 10.0.7.3
+vrrp 4  pre
+vrrp 4  pri 200
+vrrp 4  timer ad 1 
+vrrp 4  authe	text ccnpvrrp 
+#do sh vrrp br
+
+do sh ip int br | ex unas
+int e1/2
+no sw
+ip add 10.0.255.14 255.255.255.252
+no shut
+des Uplink_Coresw
+int loo0
+ip add 10.0.254.4 255.255.255.255 
+no shut
+des (Router-id)
+#Routing OSPF
+router ospf 10
+ router-id 10.0.254.4
+ passive-interface default
+ no passive-interface Ethernet1/2
+ no passive-interface Vlan10
+ network 10.0.4.0 0.0.3.255 area 2
+ network 10.0.255.14 0.0.0.0 area 2
+interface Ethernet1/2
+ description Uplink_Coresw
+ no switchport
+ ip address 10.0.255.14 255.255.255.252
+ ip ospf authentication key-chain DS4
+ ip ospf network point-to-point
+ ip ospf dead-interval 3
+ ip ospf hello-interval 1
+end
+interface Vlan10
+ description HR
+ ip address 10.0.4.2 255.255.255.0
+ ip ospf authentication key-chain DS4
+ ip ospf network point-to-point
+ ip ospf dead-interval 3
+ ip ospf hello-interval 1
+ vrrp 1 ip 10.0.4.3
+ vrrp 1 priority 150
+ vrrp 1 authentication text ccnpvrrp
+end
+ip prefix-list test:
+   count: 1, range entries: 0, sequences: 5 - 5, refcount: 3
+   seq 5 permit 0.0.0.0/0 (hit count: 1, refcount: 1)
+Distribution-SW4(config)#do sh run | se r os
+router ospf 10
+ router-id 10.0.254.4
+ area 2 nssa no-summary
+ passive-interface default
+ no passive-interface Ethernet1/2
+ no passive-interface Vlan10
+ network 10.0.4.0 0.0.3.255 area 2
+ network 10.0.255.14 0.0.0.0 area 2
+ distribute-list prefix test in
