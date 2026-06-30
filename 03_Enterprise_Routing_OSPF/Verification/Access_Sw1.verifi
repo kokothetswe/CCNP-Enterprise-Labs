@@ -1,1 +1,127 @@
+Access-Sw1#sh vl br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Et0/1, Et1/2, Et1/3, Et2/0
+                                                Et2/1, Et2/2, Et2/3
+1002 fddi-default                     act/unsup 
+1003 trcrf-default                    act/unsup 
+1004 fddinet-default                  act/unsup 
+1005 trbrf-default                    act/unsup 
+2020 Engineering                      active    Et0/0
+2021 Sales                            active    
+2022 Marketing                        active    
+2023 IT                               active    
+Access-Sw1#
+
+Access-Sw1#sh spanning-tree mst 1
+
+##### MST1    vlans mapped:   2020,2022
+Bridge        address aabb.cc00.0300  priority      32769 (32768 sysid 1)
+Root          address aabb.cc00.0100  priority      1     (0 sysid 1)
+              port    Po11            cost          1000000   rem hops 19
+
+Interface        Role Sts Cost      Prio.Nbr Type
+---------------- ---- --- --------- -------- --------------------------------
+Et0/0            Desg FWD 2000000   128.1    Shr Edge 
+Po11             Root FWD 1000000   128.65   P2p 
+Po13             Desg FWD 1000000   128.66   P2p 
+
+
+Access-Sw1#sh int tr
+
+Port        Mode             Encapsulation  Status        Native vlan
+Po11        on               802.1q         trunking      999
+Po13        on               802.1q         trunking      997
+
+Port        Vlans allowed on trunk
+Po11        2020-2023
+Po13        2020-2023
+
+Port        Vlans allowed and active in management domain
+Po11        2020-2023
+Po13        2020-2023
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Po11        2020-2023
+Po13        2020-2023
+
+Access-Sw1#sh etherch sum
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      N - not in use, no aggregation
+        f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        m - not in use, port not aggregated due to minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+        A - formed by Auto LAG
+
+
+Number of channel-groups in use: 2
+Number of aggregators:           2
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+11     Po11(SU)        LACP      Et0/2(P)    Et0/3(P)    
+13     Po13(SU)        LACP      Et1/0(P)    Et1/1(P)    
+          
+Access-Sw1#sh vtp status 
+VTP Version capable             : 1 to 3
+VTP version running             : 3
+VTP Domain Name                 : lab.com
+VTP Pruning Mode                : Disabled
+VTP Traps Generation            : Disabled
+Device ID                       : aabb.cc80.0300
+
+Feature VLAN:
+--------------
+VTP Operating Mode                : Client
+Number of existing VLANs          : 5
+Number of existing extended VLANs : 4
+Maximum VLANs supported locally   : 4096
+Configuration Revision            : 3
+Primary ID                        : aabb.cc80.0100
+Primary Description               : Distribution-SW1
+MD5 digest                        : 0xEF 0xDC 0xC4 0x32 0x93 0x1C 0xD9 0x6B 
+                                    0x43 0xAA 0x08 0x7C 0x2D 0x09 0x60 0x43 
+
+
+Feature MST:
+--------------
+VTP Operating Mode                : Client
+
+
+Access-Sw1#sh spanning-tree mst configuration digest 
+Name      [lab.com]
+Revision  1     Instances configured 3
+Digest          0xD48D7C50981F9B448ABA19FD6003641F
+Pre-std Digest  0xC9B485188DD456263556616D4CBBCC22
+Access-Sw1#sh spanning-tree mst configuration 
+Name      [lab.com]
+Revision  1     Instances configured 3
+
+Instance  Vlans mapped
+--------  ---------------------------------------------------------------------
+0         1-2019,2024-4094
+1         2020,2022
+2         2021,2023
+
+Access-Sw1#sh vtp devices 
+Retrieving information from the VTP domain. Waiting for 5 seconds.
+
+VTP Feature  Conf Revision Primary Server Device ID      Device Description    
+------------ ---- -------- -------------- -------------- ----------------------
+VLAN         No   3        aabb.cc80.0100=aabb.cc80.0100 Distribution-SW1      
+MST          No   2        aabb.cc80.0100=aabb.cc80.0100 Distribution-SW1      
+VLAN         No   3        aabb.cc80.0100 aabb.cc80.0200 Distribution-SW2      
+MST          No   2        aabb.cc80.0100 aabb.cc80.0200 Distribution-SW2      
+VLAN         No   3        aabb.cc80.0100 aabb.cc80.0400 Access-Sw2            
+MST          No   2        aabb.cc80.0100 aabb.cc80.0400 Access-Sw2  
+
 
