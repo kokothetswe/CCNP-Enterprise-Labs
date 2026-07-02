@@ -117,4 +117,35 @@ Number of existing VLANs          : 12
 Configuration Revision            : 0
 MD5 digest                        : 0x53 0x74 0xE4 0x0F 0xE8 0x22 0xEC 0x0E 
                                     0xBD 0x6A 0x05 0x3F 0x1E 0x8C 0x9D 0x3A 
+
+Access_Sw1(config)#
+
+ip access-list standard VTY_ACL
+ permit 10.0.0.11
+ip access-list extended SNMP_And_SSH
+ permit tcp host 10.0.0.11 host 10.0.0.5 eq 22
+ permit udp host 10.0.0.12 host 10.0.0.5 eq snmp
+ deny   ip any host 10.0.0.5
+ permit ip any any
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ access-class VTY_ACL in
+ logging synchronous
+ login local
+ transport input ssh
+interface Vlan1
+ no ip address
+ shutdown 
+!         
+interface Vlan10
+ description Management
+ ip address 10.0.0.5 255.255.255.0
+!         
 #wr mem
