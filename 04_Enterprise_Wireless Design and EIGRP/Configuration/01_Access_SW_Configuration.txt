@@ -1,1 +1,120 @@
 
+banner motd ^
+------------------------------------------------------------
+[!] WARNING: This is a private lab configuration.
+[!] Property of: Ko Ko Thet Swe
+[!] Note: "Noted! I am from copy my lab!"
+------------------------------------------------------------
+^
+Access_Sw1(conf)# vlan 10
+ name IT
+vlan 11
+ name Admin
+vlan 12
+ name Marketing
+vlan 13
+ name Accounting
+vlan 14
+ name HR
+vlan 100
+ name Local
+vlan 999
+ name NATIVE
+Access_Sw1(config)#do sh etherch sum
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+
+Number of channel-groups in use: 2
+Number of aggregators:           2
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+11     Po11(SU)        LACP      Et1/0(P)    Et1/1(P)    Et1/2(P)    
+                                 Et1/3(P)    
+12     Po12(SU)        LACP      Et2/0(P)    Et2/1(P)    Et2/2(P)    Et2/3(P)   
+Access_Sw1(config)#do sh run int po11
+Building configuration...
+
+Current configuration : 297 bytes
+!
+interface Port-channel11
+ switchport
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10-14
+ switchport mode trunk
+ ip access-group SNMP_And_SSH in
+ lacp fast-switchover
+ spanning-tree link-type point-to-point
+ spanning-tree guard loop
+end
+
+Access_Sw1(config)#do sh run | se spa
+vtp mode transparent
+spanning-tree mode rapid-pvst
+spanning-tree portfast default
+spanning-tree portfast bpduguard default
+spanning-tree portfast bpdufilter default
+
+Access_Sw1(config)#do sh run int po11
+Building configuration...
+
+Current configuration : 297 bytes
+!
+interface Port-channel11
+ switchport
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10-14
+ switchport mode trunk
+ ip access-group SNMP_And_SSH in
+ lacp fast-switchover
+ spanning-tree link-type point-to-point
+ spanning-tree guard loop
+end
+Access_Sw1(config)#do sh run int po12
+Building configuration...
+
+Current configuration : 297 bytes
+!
+interface Port-channel12
+ switchport
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10-14
+ switchport mode trunk
+ ip access-group SNMP_And_SSH in
+ lacp fast-switchover
+ spanning-tree link-type point-to-point
+ spanning-tree guard loop
+endAccess_Sw1(config)#do sh run | se vtp 
+vtp domain lab.com
+vtp mode transparent
+
+Access_Sw1(config)#do sh vtp status 
+VTP Version capable             : 1 to 3
+VTP version running             : 2
+VTP Domain Name                 : lab.com
+VTP Pruning Mode                : Disabled
+VTP Traps Generation            : Disabled
+Device ID                       : aabb.cc00.0500
+Configuration last modified by 0.0.0.0 at 0-0-00 00:00:00
+
+Feature VLAN:
+--------------
+VTP Operating Mode                : Transparent
+Maximum VLANs supported locally   : 1005
+Number of existing VLANs          : 12
+Configuration Revision            : 0
+MD5 digest                        : 0x53 0x74 0xE4 0x0F 0xE8 0x22 0xEC 0x0E 
+                                    0xBD 0x6A 0x05 0x3F 0x1E 0x8C 0x9D 0x3A 
+#wr mem
