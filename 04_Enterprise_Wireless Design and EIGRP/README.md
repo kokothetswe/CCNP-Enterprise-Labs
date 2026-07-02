@@ -10,18 +10,23 @@ This repository features a highly available, scalable, and secure enterprise net
 ## 🛠️ Implemented Technologies & Protocols
 
 ### 1. Layer 2 Infrastructure & Redundancy
-* **VLANs & Trunking:** Broadcast domain separation and 802.1Q trunking across Access and Distribution layers.
-* **EtherChannel (LACP):** Link aggregation between Core switches (`CoreSw1` <-> `CoreSw2` via **Port-Channel 10**) to increase bandwidth and ensure link redundancy.
+* **VLANs & Trunking:** Broadcast domain separation and 802.1Q trunking across Access and Core/Distribution layers.
+* **Layer 3 EtherChannel (LACP):** Implemented between core switches (`CoreSw1` <-> `CoreSw2` via **Port-Channel 10**) to increase bandwidth and guarantee routing redundancy. If the primary links (e.g., `e2/0`) go down, EIGRP neighbor adjacency seamlessly fails over to **Port-Channel 10**.
+* **Layer 2 EtherChannel:** Deployed between `CoreSw1` <-> `Access_Sw` and `CoreSw2` <-> `Access_Sw` for redundant access-layer uplinks.
 * **Spanning Tree Protocol (Rapid PVST+):** Optimizes per-VLAN load balancing and guarantees a loop-free Layer 2 environment.
 
 ### 2. First Hop Redundancy Protocols (FHRP)
-* **HSRP (Hot Standby Router Protocol):** Active/Standby gateway redundancy deployed in the Left Segment (**VLAN 10 - 14**) for seamless failover.
+* **HSRP (Hot Standby Router Protocol):** Active/Standby gateway redundancy deployed in the Left Segment (**VLAN 10 - 14**) for seamless infrastructure failover.
 
 ### 3. Layer 3 Routing & EIGRP Optimization
-* **EIGRP Dynamic Routing:** Implemented for fast convergence across the enterprise core.
+* **EIGRP Dynamic Routing:** Implemented for fast convergence across the enterprise core network.
 * **Query Packet Reduction & Summarization:** Optimized to prevent **Stuck-In-Active (SIA)** states using:
-  * **Route Summarization** at the Distribution/Core layer boundaries.
-  * **EIGRP Stub Routing** at edge/spoke nodes to restrict query propagation.
+  * **Route Summarization** at the Distribution/Core layer boundaries to reduce routing table overhead.
+  * **EIGRP Stub Routing** at edge/spoke nodes to strictly restrict query propagation.
+
+### 4. Device Management & Hardening (Enterprise Style)
+* **Secure Management:** Configured secure **SSH** access and **SNMP** monitoring across all network elements.
+* **Infrastructure Access Control Lists (ACLs):** Granular ACL policies applied to secure and control access to the management plane and infrastructure devices.
 
 ---
 
@@ -38,4 +43,5 @@ show ip eigrp traffic
 # View the EIGRP topology table for Successors and Feasible Successors
 show ip eigrp topology
 
-
+# Verify EtherChannel status and bundle interfaces
+show etherchannel summary
