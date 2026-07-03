@@ -3,7 +3,7 @@
 This repository features a highly available, scalable, and secure enterprise network topology integrating Layer 2 redundancy, Layer 3 routing, and granular traffic filtering.
 
 ## 📌 Network Topology
-![Enterprise Wireless and EIGRP Topology] 04_Enterprise_Wireless Design and EIGRP/Enterprise_Eigrp_Topology .png
+![Enterprise Wireless and EIGRP Topology] [04_Enterprise_Wireless Design and EIGRP/Enterprise_Eigrp_Topology .png](https://github.com/kokothetswe/CCNP-Enterprise-Labs/commit/e90afb663b1ded84efd55fe7863316e9c55176fc)
 
 ---
 
