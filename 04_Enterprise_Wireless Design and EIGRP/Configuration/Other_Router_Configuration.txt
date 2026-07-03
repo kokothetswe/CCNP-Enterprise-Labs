@@ -5,3 +5,250 @@ banner motd ^
 [!] Note: "Noted! I am from copy my lab!"
 ------------------------------------------------------------
 ^
+ISP1#sh running-config 
+Building configuration...
+
+Current configuration : 1107 bytes
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname ISP1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+no ip icmp rate-limit unreachable
+!
+!
+!         
+!         
+!         
+!         
+!         
+!         
+          
+          
+!         
+!         
+!         
+!         
+no ip domain lookup
+ip cef    
+no ipv6 cef
+!         
+multilink bundle-name authenticated
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+redundancy
+!         
+no cdp log mismatch duplex
+!         
+ip tcp synwait-time 5
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+interface Loopback9
+ description Net
+ ip address 8.8.8.8 255.255.255.255
+!         
+interface Ethernet0/0
+ description Downlink_Customer1
+ ip address 100.81.0.1 255.255.255.252
+!         
+interface Ethernet0/1
+ no ip address
+!         
+interface Ethernet0/2
+ no ip address
+!         
+interface Ethernet0/3
+ no ip address
+!         
+ip forward-protocol nd
+!         
+!         
+no ip http server
+no ip http secure-server
+!         
+!         
+!         
+!         
+control-plane
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ login    
+ transport input none
+!         
+!         
+end       
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------
+---------------------------
+-------------------
+-------------
+---------
+------
+----ISP2#sh run
+Building configuration...
+
+Current configuration : 1108 bytes
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname ISP2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+no ip icmp rate-limit unreachable
+!
+!
+!         
+!         
+!         
+!         
+!         
+!         
+          
+          
+!         
+!         
+!         
+!         
+no ip domain lookup
+ip cef    
+no ipv6 cef
+!         
+multilink bundle-name authenticated
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+redundancy
+!         
+no cdp log mismatch duplex
+!         
+ip tcp synwait-time 5
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+interface Loopback9
+ description Net
+ ip address 8.8.8.8 255.255.255.255
+!         
+interface Ethernet0/0
+ description Downlink_customer1
+ ip address 197.169.0.1 255.255.255.252
+!         
+interface Ethernet0/1
+ no ip address
+!         
+interface Ethernet0/2
+ no ip address
+!         
+interface Ethernet0/3
+ no ip address
+!         
+ip forward-protocol nd
+!         
+!         
+no ip http server
+no ip http secure-server
+!         
+!         
+!         
+!         
+control-plane
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ login    
+ transport input none
+!         
+!         
+end       
+#wr mem
+
+--
+-
