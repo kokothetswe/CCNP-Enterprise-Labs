@@ -1,0 +1,7 @@
+banner motd ^
+------------------------------------------------------------
+[!] WARNING: This is a private lab configuration.
+[!] Property of: Ko Ko Thet Swe
+[!] Note: "Noted! I am from copy my lab!"
+------------------------------------------------------------
+^
