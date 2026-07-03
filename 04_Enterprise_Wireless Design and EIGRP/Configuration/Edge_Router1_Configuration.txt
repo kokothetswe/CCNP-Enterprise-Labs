@@ -110,9 +110,9 @@ ip access-list extended NAT_ACL
  deny   ip 10.0.0.0 0.0.0.255 any
  permit ip 10.0.0.0 0.0.7.255 any
 ip access-list extended SNMP_And_SSH
- permit udp host 10.0.0.12 host 10.0.0.6 eq snmp
- permit tcp host 10.0.0.11 host 10.0.0.6 eq 22
- deny   ip any host 10.0.0.6
+ permit udp host 10.0.0.12 host 10.0.255.1 eq snmp
+ permit tcp host 10.0.0.11 host 10.0.255.1 eq 22
+ deny   ip any host 10.0.255.1
  permit ip any any
 !         
 ip sla 1  
@@ -204,16 +204,18 @@ Gateway of last resort is 100.81.0.1 to network 0.0.0.0
 D        10.0.0.0/21 [90/281856] via 10.0.255.3, 00:34:01, Ethernet0/0
       192.168.255.0/30 is subnetted, 1 subnets
 D        192.168.255.0 [90/307200] via 10.0.255.3, 00:34:01, Ethernet0/0
+Edge_Router1(config)#do sh ip acces
 Standard IP access list VTY_ACL
     10 permit 10.0.0.11
 Extended IP access list NAT_ACL
     10 deny ip 10.0.0.0 0.0.0.255 any
     20 permit ip 10.0.0.0 0.0.7.255 any
 Extended IP access list SNMP_And_SSH
-    10 permit udp host 10.0.0.12 host 10.0.0.6 eq snmp
-    20 permit tcp host 10.0.0.11 host 10.0.0.6 eq 22
-    30 deny ip any host 10.0.0.6
-    40 permit ip any any (2735 matches)
+    10 permit tcp host 10.0.0.11 host 10.0.255.1 eq 22
+    20 permit udp host 10.0.0.12 host 10.0.255.1 eq snmp
+    30 deny ip any host 10.0.255.1 (5 matches)
+    40 permit ip any any (24 matches)
+
 Edge_Router1#sh run | se nat
  ip nat inside
  ip nat outside
