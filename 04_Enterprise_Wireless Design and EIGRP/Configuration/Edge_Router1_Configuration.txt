@@ -1,0 +1,14 @@
+
+banner motd ^
+------------------------------------------------------------
+[!] WARNING: This is a private lab configuration.
+[!] Property of: Ko Ko Thet Swe
+[!] Note: "Noted! I am from copy my lab!"
+-----------------------------------------------------
+Edge_Router1#sh ip int br | ex unas
+Interface                  IP-Address      OK? Method Status                Protocol
+Ethernet0/0                10.0.255.1      YES NVRAM  up                    up      
+Ethernet0/1                100.81.0.2      YES NVRAM  up                    up      
+Loopback0                  1.1.1.1         YES NVRAM  up                    up      
+Loopback1                  10.0.0.6        YES NVRAM  up                    up      
+NVI0                       10.0.255.1      YES unset  up                    up      
