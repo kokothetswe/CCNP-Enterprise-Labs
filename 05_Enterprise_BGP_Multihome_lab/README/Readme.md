@@ -129,4 +129,5 @@ show running-config | section router bgp
 R1# show ip bgp summary
 **Check Learned Routes**
 R1# show ip bgp
-
+**Final-Testing**
+R5 and R6 are used as external reachability test networks for verifying iBGP route propagation.
