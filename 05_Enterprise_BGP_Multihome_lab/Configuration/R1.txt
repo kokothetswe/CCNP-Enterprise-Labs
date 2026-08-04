@@ -1,3 +1,7 @@
+! =========================================
+! R1 - Enterprise Multihomed BGP Lab
+! AS 100
+! =========================================
 R1(config)#hostname R1
 R1(config)#
           interface Loopback0
