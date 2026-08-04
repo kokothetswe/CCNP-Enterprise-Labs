@@ -68,4 +68,4 @@ Packet sent with a source address of 192.168.5.1
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 Success rate is 100 percent (100/100), round-trip min/avg/max = 3/5/7 ms
 R5#
-R5 and R6 will be reachiability causes for ibgp....
+R5 and R6 are used as external reachability test networks for verifying iBGP route propagation.
