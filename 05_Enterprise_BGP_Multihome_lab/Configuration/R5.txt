@@ -1,0 +1,43 @@
+! =========================================
+! R5 - Enterprise Multihomed BGP Lab
+! AS 500
+! =========================================
+R5#sh running-config 
+Building configuration...
+
+Current configuration : 1585 bytes
+!
+! Last configuration change at 08:50:21 UTC Tue Aug 4 2026
+!
+hostname R5
+interface Loopback0
+ ip address 5.5.5.5 255.255.255.255
+!         
+interface Loopback1
+ ip address 192.168.5.1 255.255.255.0
+!         
+interface Ethernet0/0
+ no switchport
+ ip address 10.0.15.2 255.255.255.0
+!         
+interface Ethernet0/1
+ no switchport
+ ip address 10.0.51.2 255.255.255.0
+router bgp 500
+ bgp router-id 5.5.5.5
+ bgp log-neighbor-changes
+ network 192.168.5.0
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 password ccnpbgp
+ neighbor 1.1.1.1 ebgp-multihop 2
+ neighbor 1.1.1.1 update-source Loopback0
+!         
+!         
+no ip http server
+!         
+ip route 1.1.1.1 255.255.255.255 10.0.15.1 name BGP_Def
+ip route 1.1.1.1 255.255.255.255 10.0.51.1 name BGP_Def
+!         
+R5#wr
+Building configuration...
+Compressed configuration from 1585 bytes to 974 bytes[OK]

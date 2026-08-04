@@ -1,0 +1,87 @@
+! =========================================
+! R6 - Enterprise Multihomed BGP Lab
+! AS 600
+! =========================================
+R6#sh ip bgp sum
+BGP router identifier 6.6.6.6, local AS number 600
+BGP table version is 3, main routing table version 3
+2 network entries using 280 bytes of memory
+2 path entries using 152 bytes of memory
+2/2 BGP path/bestpath attribute entries using 272 bytes of memory
+1 BGP AS-PATH entries using 24 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 728 total bytes of memory
+BGP activity 2/0 prefixes, 2/0 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+10.0.46.1       4          100     154     155        3    0    0 02:15:43        1
+R6#sh ip bgp  
+BGP table version is 3, local router ID is 6.6.6.6
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  192.168.5.0      10.0.46.1                              0 100 500 i
+ *>  192.168.6.0      0.0.0.0                  0         32768 i
+R6#sh ip bgp ne
+R6#sh ip bgp nei
+R6#sh ip bgp neighbors 10.0.46.1 ad
+R6#sh ip bgp neighbors 10.0.46.1 advertised-routes 
+BGP table version is 3, local router ID is 6.6.6.6
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  192.168.6.0      0.0.0.0                  0         32768 i
+
+Total number of prefixes 1 
+R6#sh ip bgp nei
+R6#sh ip bgp neighbors 1.1.1.1 ad
+R6#sh ip bgp neighbors 1.1.1.1 advertised-routes 
+% No such neighbor or address family
+R6#sh ip bgp neighbors 4.4.4.4 ad                
+R6#sh ip bgp neighbors 4.4.4.4 advertised-routes 
+% No such neighbor or address family
+R6#sh ip bgp nei
+R6#sh ip bgp neighbors 5.5.5.5 ad
+R6#sh ip bgp neighbors 5.5.5.5 advertised-routes 
+% No such neighbor or address family
+R6#sh ip route bgp 
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+B     192.168.5.0/24 [20/0] via 10.0.46.1, 01:55:39
+R6#R6#ping 192.168.5.1 so lo1 
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.5.1, timeout is 2 seconds:
+Packet sent with a source address of 192.168.6.1 
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 4/5/6 ms
+R6#ping 192.168.5.1 so lo1  repe
+R6#ping 192.168.5.1 so lo1  repeat 10000
+Type escape sequence to abort.
+Sending 10000, 100-byte ICMP Echos to 192.168.5.1, timeout is 2 seconds:
+Packet sent with a source address of 192.168.6.1 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Success rate is 99 percent (9026/9027), round-trip min/avg/max = 2/5/29 ms
+
+R5 and R6 are used as external reachability test networks for verifying iBGP route propagation.

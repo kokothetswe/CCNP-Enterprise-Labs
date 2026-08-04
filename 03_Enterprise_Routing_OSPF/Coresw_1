@@ -1,0 +1,69 @@
+#Configure IPAddress Assign on Core
+
+int e0/0
+no sw
+ip add 10.0.255.1 255.255.255.252
+no shut
+des Downlink_Ds1
+
+int e0/1
+no sw
+ip add 10.0.255.5 255.255.255.252
+no shut
+des Downlink_Ds2
+
+int e1/2
+no sw
+ip add 10.0.255.9 255.255.255.252
+no shut
+des Downlink_Ds3
+
+int e1/3
+no sw
+ip add 10.0.255.13  255.255.255.252
+no shut
+des Downlink_Ds4
+
+int e0/3
+no sw
+ip add 172.168.254.1 255.255.255.252
+no shut
+des Uplink-DMZ_Sw1
+int e1/1
+no sw
+ip add 10.0.255.21  255.255.255.252
+no shut
+des Uplink_R2
+int e1/0
+no sw
+ip add 10.0.255.17  255.255.255.252
+no shut
+des Uplink_R1
+int e0/2
+ip add 10.0.255.25 255.255.255.252
+des Uplink_Mikrotik
+
+int loo0
+ip add 1.1.1.1 255.255.255.255
+no shut
+des (Router-id)
+#Routing OSPF 
+router ospf 10
+ router ospf 10
+ router-id 1.1.1.1
+ area 1 range 10.0.0.0 255.255.252.0
+ area 2 range 10.0.4.0 255.255.252.0
+ area 5 virtual-link 172.168.255.1 hello-interval 1 dead-interval 3 authentication key-chain Core_Sw
+ area 5 virtual-link 172.168.254.1
+ network 10.0.255.1 0.0.0.0 area 1
+ network 10.0.255.5 0.0.0.0 area 1
+ network 10.0.255.9 0.0.0.0 area 2
+ network 10.0.255.13 0.0.0.0 area 2
+ network 10.0.255.17 0.0.0.0 area 0
+ network 10.0.255.21 0.0.0.0 area 0
+ network 10.0.255.25 0.0.0.0 area 10
+ network 172.168.254.1 0.0.0.0 area 5
+#ABR( Summarized in ABR)
+area 1 range 10.0.0.0 255.255.252.0
+ area 2 range 10.0.4.0 255.255.252.0
+ 

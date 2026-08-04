@@ -1,0 +1,206 @@
+Distribution-SW3#sh vl br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Et1/3, Et2/0, Et2/1, Et2/2
+                                                Et2/3
+10   HR                               active    
+11   Admin                            active    
+12   Cashier                          active    
+13   Warehouse                        active    
+1002 fddi-default                     act/unsup 
+1003 trcrf-default                    act/unsup 
+1004 fddinet-default                  act/unsup 
+1005 trbrf-default                    act/unsup 
+Distribution-SW3#sh spa
+
+
+Distribution-SW3#sh spanning-tree vlan 10
+
+VLAN0010
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    10
+             Address     aabb.cc00.0500
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    10     (priority 0 sys-id-ext 10)
+             Address     aabb.cc00.0500
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Desg FWD 1000000   128.65   P2p 
+Po2                 Desg FWD 1000000   128.66   P2p 
+Po3                 Desg FWD 1000000   128.67   P2p 
+
+
+Distribution-SW3#sh span
+Distribution-SW3#sh spanning-tree vlan 11
+
+VLAN0011
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    11
+             Address     aabb.cc00.0500
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    11     (priority 0 sys-id-ext 11)
+             Address     aabb.cc00.0500
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Desg FWD 1000000   128.65   P2p 
+Po2                 Desg FWD 1000000   128.66   P2p 
+Po3                 Desg FWD 1000000   128.67   P2p 
+
+
+Distribution-SW3#
+
+Distribution-SW3#sh spanning-tree vlan 12
+
+VLAN0012
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    12
+             Address     aabb.cc00.0600
+             Cost        1000000
+             Port        65 (Port-channel1)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    4108   (priority 4096 sys-id-ext 12)
+             Address     aabb.cc00.0500
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Root FWD 1000000   128.65   P2p 
+Po2                 Desg BKN*1000000   128.66   P2p *ROOT_Inc 
+Po3                 Desg BKN*1000000   128.67   P2p *ROOT_Inc 
+
+
+Distribution-SW3#sh sp
+Distribution-SW3#sh spanning-tree vlan 13
+
+VLAN0013
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    13
+             Address     aabb.cc00.0600
+             Cost        1000000
+             Port        65 (Port-channel1)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    4109   (priority 4096 sys-id-ext 13)
+             Address     aabb.cc00.0500
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po1                 Root FWD 1000000   128.65   P2p 
+Po2                 Desg BKN*1000000   128.66   P2p *ROOT_Inc 
+Po3                 Desg BKN*1000000   128.67   P2p *ROOT_Inc 
+
+
+Distribution-SW3#sh etherch sum
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      N - not in use, no aggregation
+        f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        m - not in use, port not aggregated due to minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+        A - formed by Auto LAG
+
+
+Number of channel-groups in use: 3
+Number of aggregators:           3
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+1      Po1(SU)          -        Et0/0(P)    Et0/1(P)    
+2      Po2(SU)         PAgP      Et0/2(P)    Et0/3(P)    
+3      Po3(SU)         PAgP      Et1/0(P)    Et1/1(P)    
+
+Distribution-SW3#sh vrrp br
+Interface          Grp Pri Time  Own Pre State   Master addr     Group addr
+Vl10               1   200 3218       Y  Master  10.0.4.1        10.0.4.3       
+Vl11               2   200 3218       Y  Master  10.0.5.1        10.0.5.3       
+Vl12               3   150 3414       Y  Backup  10.0.6.2        10.0.6.3       
+Vl13               4   150 3414       Y  Backup  10.0.7.2        10.0.7.3  
+
+Distribution-SW3#sh int tr
+
+Port        Mode             Encapsulation  Status        Native vlan
+Po1         on               802.1q         trunking      999
+Po2         on               802.1q         trunking      999
+Po3         on               802.1q         trunking      999
+
+Port        Vlans allowed on trunk
+Po1         10-13
+Po2         10-13
+Po3         10-13
+
+Port        Vlans allowed and active in management domain
+Po1         10-13
+Po2         10-13
+Po3         10-13
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Po1         10-13
+Po2         10-11
+Po3         10-11
+
+Distribution-SW3#sh ip os ne    
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+1.1.1.1           1   FULL/BDR        00:00:02    10.0.255.9      Ethernet1/2
+10.0.254.4        0   FULL/  -        00:00:02    10.0.4.2        Vlan10
+Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C
+Et1/2        10    2               10.0.255.10/30     10    DR    1/1
+Vl13         10    2               10.0.7.1/24        1     DR    0/0
+Vl12         10    2               10.0.6.1/24        1     DR    0/0
+Vl11         10    2               10.0.5.1/24        1     DR    0/0
+Vl10         10    2               10.0.4.1/24        1     P2P   1/1
+Distribution-SW3#sh ip route os
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override, p - overrides from PfR
+
+Gateway of last resort is 10.0.4.2 to network 0.0.0.0
+
+O*IA  0.0.0.0/0 [110/12] via 10.0.4.2, 00:23:53, Vlan10
+Distribution-SW3#sh ip prefix-list detail 
+Prefix-list with the last deletion/insertion: test
+ip prefix-list test:
+   count: 1, range entries: 0, sequences: 5 - 5, refcount: 3
+   seq 5 permit 0.0.0.0/0 (hit count: 1, refcount: 1)
+
+
+Distribution-SW3#sh ip int br | ex unas
+Interface              IP-Address      OK? Method Status                Protocol
+Ethernet1/2            10.0.255.10     YES NVRAM  up                    up      
+Loopback0              10.0.254.3      YES NVRAM  up                    up      
+Vlan10                 10.0.4.1        YES NVRAM  up                    up      
+Vlan11                 10.0.5.1        YES NVRAM  up                    up      
+Vlan12                 10.0.6.1        YES NVRAM  up                    up      
+Vlan13                 10.0.7.1        YES NVRAM  up                    up
+
+
+
+

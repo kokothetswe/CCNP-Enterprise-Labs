@@ -1,0 +1,253 @@
+Access-Sw2#sh spanning-tree 
+
+MST0
+  Spanning tree enabled protocol mstp
+  Root ID    Priority    32768
+             Address     aabb.cc00.0100
+             Cost        0
+             Port        65 (Port-channel12)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32768  (priority 32768 sys-id-ext 0)
+             Address     aabb.cc00.0400
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et0/0               Desg FWD 2000000   128.1    Shr Edge 
+Et0/1               Desg FWD 2000000   128.2    Shr Edge 
+Et1/2               Desg FWD 2000000   128.7    Shr Edge 
+Po12                Root FWD 1000000   128.65   P2p 
+Po14                Desg FWD 1000000   128.66   P2p 
+
+
+          
+MST1
+  Spanning tree enabled protocol mstp
+  Root ID    Priority    1
+             Address     aabb.cc00.0100
+             Cost        1000000
+             Port        65 (Port-channel12)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32769  (priority 32768 sys-id-ext 1)
+             Address     aabb.cc00.0400
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et1/2               Desg FWD 2000000   128.7    Shr Edge 
+Po12                Root FWD 1000000   128.65   P2p 
+Po14                Desg FWD 1000000   128.66   P2p 
+
+
+ --More-- 
+
+MST2
+  Spanning tree enabled protocol mstp
+  Root ID    Priority    2
+             Address     aabb.cc00.0200
+             Cost        1000000
+             Port        66 (Port-channel14)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32770  (priority 32768 sys-id-ext 2)
+             Address     aabb.cc00.0400
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et0/0               Desg FWD 2000000   128.1    Shr Edge 
+Et0/1               Desg FWD 2000000   128.2    Shr Edge 
+Po12                Desg FWD 1000000   128.65   P2p 
+Po14                Root FWD 1000000   128.66   P2p 
+
+Access-Sw2# sh int tr 
+
+Port        Mode             Encapsulation  Status        Native vlan
+Po12        on               802.1q         trunking      998
+Po14        on               802.1q         trunking      996
+
+Port        Vlans allowed on trunk
+Po12        2020-2023
+Po14        2020-2023
+
+Port        Vlans allowed and active in management domain
+Po12        2020-2023
+Po14        2020-2023
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Po12        2020-2023
+Po14        2020-2023
+Access-Sw2#sh int tr
+
+Port        Mode             Encapsulation  Status        Native vlan
+Po12        on               802.1q         trunking      998
+Po14        on               802.1q         trunking      996
+
+Port        Vlans allowed on trunk
+Po12        2020-2023
+Po14        2020-2023
+
+Port        Vlans allowed and active in management domain
+Po12        2020-2023
+Po14        2020-2023
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Po12        2020-2023
+Po14        2020-2023
+
+
+Access-Sw2#sh vtp status 
+VTP Version capable             : 1 to 3
+VTP version running             : 3
+VTP Domain Name                 : lab.com
+VTP Pruning Mode                : Disabled
+VTP Traps Generation            : Disabled
+Device ID                       : aabb.cc80.0400
+
+Feature VLAN:
+--------------
+VTP Operating Mode                : Client
+Number of existing VLANs          : 5
+Number of existing extended VLANs : 4
+Maximum VLANs supported locally   : 4096
+Configuration Revision            : 3
+Primary ID                        : aabb.cc80.0100
+Primary Description               : Distribution-SW1
+MD5 digest                        : 0xEF 0xDC 0xC4 0x32 0x93 0x1C 0xD9 0x6B 
+                                    0x43 0xAA 0x08 0x7C 0x2D 0x09 0x60 0x43 
+
+
+Feature MST:
+--------------
+VTP Operating Mode                : Client
+Configuration Revision            : 2
+Primary ID                        : aabb.cc80.0100
+Primary Description               : Distribution-SW1
+MD5 digest                        : 0x9B 0x48 0xDD 0xAB 0x02 0xCB 0xC0 0xA5 
+                                    0x8E 0xAB 0x66 0xD3 0x5D 0xDC 0x31 0x52 
+
+
+Feature UNKNOWN:
+--------------
+VTP Operating Mode                : Transparent
+
+
+Access-Sw2#sh lacp co
+Access-Sw2#sh lacp counters 
+             LACPDUs         Marker      Marker Response    LACPDUs
+Port       Sent   Recv     Sent   Recv     Sent   Recv      Pkts Err
+---------------------------------------------------------------------
+Channel group: 12
+Et1/0       25     25       0      0        0      0         0     
+Et1/1       24     24       0      0        0      0         0     
+
+             LACPDUs         Marker      Marker Response    LACPDUs
+Port       Sent   Recv     Sent   Recv     Sent   Recv      Pkts Err
+---------------------------------------------------------------------
+Channel group: 14
+Et0/2       27     25       0      0        0      0         0     
+Et0/3       25     24       0      0        0      0         0     
+Access-Sw2#sh int accounting 
+Ethernet0/0 Sales
+                Protocol    Pkts In   Chars In   Pkts Out  Chars Out
+                   Other          0          0       1192     134484
+                 DEC MOP          0          0          1         77
+           Spanning Tree          0          0        278      33082
+                     CDP          0          0         19       8911
+Ethernet0/1 IT-Dpt
+                Protocol    Pkts In   Chars In   Pkts Out  Chars Out
+                   Other          0          0       1478     168457
+                 DEC MOP          0          0          1         77
+           Spanning Tree          0          0        278      33082
+                     CDP         12       4524         19       8911
+Ethernet0/2 
+                Protocol    Pkts In   Chars In   Pkts Out  Chars Out
+                   Other          0          0       2886     327816
+                 DEC MOP          0          0          1         77
+           Spanning Tree          3        453        280      43400
+                     CDP         20       9120         19       8761
+                     VTP          0          0          9       2417
+                    LACP         26       3224         28       3584
+Ethernet0/3 
+                Protocol    Pkts In   Chars In   Pkts Out  Chars Out
+                   Other          0          0          2        120
+                     CDP         19       8646         18       8282
+                     VTP          0          0          2        916
+                    LACP         25       3100         25       3200
+Ethernet1/0 
+                Protocol    Pkts In   Chars In   Pkts Out  Chars Out
+                   Other          0          0       2638     304377
+                 DEC MOP          0          0          1         77
+           Spanning Tree          0          0        279      43245
+                     CDP         20       9120         18       8302
+                     VTP          0          0          6       2144
+                    LACP         26       3224         25       3200
+Ethernet1/1 
+                Protocol    Pkts In   Chars In   Pkts Out  Chars Out
+                   Other          0          0          2        120
+                     CDP         19       8666         19       8761
+                     VTP          0          0          2        916
+                    LACP         25       3100         25       3200
+Ethernet1/2 Maketing
+                Protocol    Pkts In   Chars In   Pkts Out  Chars Out
+                   Other          0          0       1357     147598
+                 DEC MOP          0          0          1         77
+           Spanning Tree          0          0        277      32963
+Access-Sw2#sh etherch sum
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      N - not in use, no aggregation
+        f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        m - not in use, port not aggregated due to minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+        A - formed by Auto LAG
+
+
+Number of channel-groups in use: 2
+Number of aggregators:           2
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+12     Po12(SU)        LACP      Et1/0(P)    Et1/1(P)    
+14     Po14(SU)        LACP      Et0/2(P)    Et0/3(P)    
+          
+
+Access-Sw2#sh spanning-tree mst 1
+
+##### MST1    vlans mapped:   2020,2022
+Bridge        address aabb.cc00.0400  priority      32769 (32768 sysid 1)
+Root          address aabb.cc00.0100  priority      1     (0 sysid 1)
+              port    Po12            cost          1000000   rem hops 19
+
+Interface        Role Sts Cost      Prio.Nbr Type
+---------------- ---- --- --------- -------- --------------------------------
+Et1/2            Desg FWD 2000000   128.7    Shr Edge 
+Po12             Root FWD 1000000   128.65   P2p 
+Po14             Desg FWD 1000000   128.66   P2p 
+
+
+
+
+Access-Sw2#sh spanning-tree mst 2
+
+##### MST2    vlans mapped:   2021,2023
+Bridge        address aabb.cc00.0400  priority      32770 (32768 sysid 2)
+Root          address aabb.cc00.0200  priority      2     (0 sysid 2)
+              port    Po14            cost          1000000   rem hops 19
+
+Interface        Role Sts Cost      Prio.Nbr Type
+---------------- ---- --- --------- -------- --------------------------------
+Et0/0            Desg FWD 2000000   128.1    Shr Edge 
+Et0/1            Desg FWD 2000000   128.2    Shr Edge 
+Po12             Desg FWD 1000000   128.65   P2p 
+Po14             Root FWD 1000000   128.66   P2p 
+

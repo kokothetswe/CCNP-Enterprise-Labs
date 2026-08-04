@@ -1,0 +1,54 @@
+! =========================================
+! R3 - Enterprise Multihomed BGP Lab
+! AS 100
+! =========================================
+R3#sh running-config 
+Building configuration...
+
+Current configuration : 1775 bytes
+!
+! Last configuration change at 08:43:36 UTC Tue Aug 4 2026
+!
+version 15.1
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname R3
+!
+interface Loopback0
+ ip address 3.3.3.3 255.255.255.255
+ ip ospf 10 area 0
+!         
+interface Ethernet0/0
+ no switchport
+ ip address 10.0.13.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf dead-interval 3
+ ip ospf hello-interval 1
+ ip ospf 10 area 0
+!         
+interface Ethernet0/1
+ no switchport
+ ip address 10.0.14.2 255.255.255.252
+ ip ospf network point-to-point
+ ip ospf dead-interval 3
+ ip ospf hello-interval 1
+ ip ospf 10 area 0
+!         
+router ospf 10
+!         
+router bgp 100
+ bgp router-id 3.3.3.3
+ bgp log-neighbor-changes
+ neighbor 1.1.1.1 remote-as 100
+ neighbor 1.1.1.1 password ccnpbgp
+ neighbor 1.1.1.1 update-source Loopback0
+ neighbor 1.1.1.1 next-hop-self
+ neighbor 4.4.4.4 remote-as 100
+ neighbor 4.4.4.4 password ccnpbgp
+ neighbor 4.4.4.4 update-source Loopback0
+ neighbor 4.4.4.4 next-hop-self
+!         
+R3#wr
