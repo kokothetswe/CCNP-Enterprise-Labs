@@ -1,3 +1,7 @@
+! =========================================
+! R3 - Enterprise Multihomed BGP Lab
+! AS 100
+! =========================================
 R3#sh running-config 
 Building configuration...
 
