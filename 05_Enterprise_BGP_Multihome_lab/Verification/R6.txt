@@ -84,3 +84,4 @@ Packet sent with a source address of 192.168.6.1
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 Success rate is 99 percent (9026/9027), round-trip min/avg/max = 2/5/29 ms
 
+R5 and R6 are used as external reachability test networks for verifying iBGP route propagation.
