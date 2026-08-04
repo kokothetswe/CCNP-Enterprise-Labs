@@ -1,1 +1,29 @@
+! =========================================
+! R6 - Enterprise Multihomed BGP Lab
+! AS 600
+! =========================================
+R6#sh running-config 
+Building configuration...
 
+Current configuration : 1363 bytes
+!
+! Last configuration change at 07:45:19 UTC Tue Aug 4 2026
+hostname R6
+interface Loopback0
+ ip address 6.6.6.6 255.255.255.255
+!         
+interface Loopback1
+ ip address 192.168.6.1 255.255.255.0
+!         
+interface Ethernet0/0
+ no switchport
+ ip address 10.0.46.2 255.255.255.0
+router bgp 600
+ bgp router-id 6.6.6.6
+ bgp log-neighbor-changes
+ network 192.168.6.0
+ neighbor 10.0.46.1 remote-as 100
+ neighbor 10.0.46.1 password cciebgp
+R6#wr
+Building configuration...
+Compressed configuration from 1363 bytes to 861 bytes[OK]
