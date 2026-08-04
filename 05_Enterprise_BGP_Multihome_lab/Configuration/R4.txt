@@ -1,3 +1,7 @@
+! =========================================
+! R4 - Enterprise Multihomed BGP Lab
+! AS 100
+! =========================================
 R4#sh running-config 
 Building configuration...
 
