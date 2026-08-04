@@ -1,4 +1,7 @@
-
+! =========================================
+! R2 - Enterprise Multihomed BGP Lab
+! AS 100
+! =========================================
 R2#sh ip bgp sum
 BGP router identifier 2.2.2.2, local AS number 100
 BGP table version is 3, main routing table version 3
