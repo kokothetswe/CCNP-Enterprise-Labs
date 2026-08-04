@@ -21,7 +21,7 @@ redundancy, and troubleshooting in an enterprise environment.
 
 ## 🌐 Topology
 
-![Enterprise Multihomed BGP Topology](topology.png)
+!https://github.com/kokothetswe/CCNP-Enterprise-Labs/blob/kokothetswe-patch-1-1/05_Enterprise_BGP_Multihome_lab/Enterprise%20Mulithome%20BGP2026.png
 
 ### Autonomous Systems
 
