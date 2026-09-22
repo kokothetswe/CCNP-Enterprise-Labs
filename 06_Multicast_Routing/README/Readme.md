@@ -3,7 +3,7 @@
 
 A comprehensive enterprise network lab demonstrating **Protocol Independent Multicast - Dense Mode (PIM-DM)** over an **OSPF Multi-Area** core infrastructure on PNetLab.
 
----
+---https://github.com/kokothetswe/CCNP-Enterprise-Labs/blob/kokothetswe-patch-1-1/06_Multicast_Routing/TOPOLOGY/Enterprise_Multicast_Lab.png
 
 ##  Topology Overview
 
