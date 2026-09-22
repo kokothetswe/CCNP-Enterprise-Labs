@@ -1,1 +1,143 @@
 
+Transist_Router#sh running-config 
+Building configuration...
+
+Current configuration : 1725 bytes
+!
+! Last configuration change at 07:22:09 UTC Tue Sep 22 2026
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname Transist_Router
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+          
+
+!
+!
+!
+!
+ip multicast-routing 
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+key chain Transist
+ key 1
+  key-string 7 070C22425E060A1511
+  cryptographic-algorithm md5
+!
+!
+!
+!
+!
+!
+!         
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ description router-id
+ ip address 3.3.3.3 255.255.255.255
+ shutdown
+!
+interface Ethernet0/0
+ description Transist_Edge1
+ ip address 192.168.255.2 255.255.255.252
+ ip pim dense-mode
+ ip ospf authentication key-chain Transist
+ ip ospf network point-to-point
+ ip ospf dead-interval 3
+ ip ospf hello-interval 1
+!
+interface Ethernet0/1
+ description Transist_Edge2
+ ip address 192.168.255.5 255.255.255.252
+ ip pim dense-mode
+ ip ospf authentication key-chain Transist
+ ip ospf network point-to-point
+ ip ospf dead-interval 3
+ ip ospf hello-interval 1
+!
+interface Ethernet0/2
+ no ip address
+ shutdown
+!
+interface Ethernet0/3
+ no ip address
+ shutdown
+!
+router ospf 1
+ router-id 3.3.3.3
+ passive-interface default
+ no passive-interface Ethernet0/0
+ no passive-interface Ethernet0/1
+ network 192.168.255.2 0.0.0.0 area 0
+ network 192.168.255.5 0.0.0.0 area 1
+!
+router ospf 10
+ default-information originate
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+!
+end
