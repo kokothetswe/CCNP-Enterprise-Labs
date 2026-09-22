@@ -1,0 +1,100 @@
+R2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+R2(config)#do sh ip int br | ex unas
+Interface                  IP-Address      OK? Method Status                Protocol
+Ethernet0/0                10.0.255.22     YES NVRAM  up                    up      
+Ethernet0/1                198.0.0.2       YES NVRAM  up                    up      
+Ethernet0/2                196.0.0.2       YES NVRAM  up                    up      
+Loopback0                  3.3.3.3         YES NVRAM  up                    up      
+NVI0                       10.0.255.22     YES unset  up                    up      
+
+R2(config)#do sh ip route os
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override, p - overrides from PfR
+
+Gateway of last resort is 196.0.0.1 to network 0.0.0.0
+
+      10.0.0.0/8 is variably subnetted, 4 subnets, 2 masks
+O        10.0.255.16/30 [110/20] via 10.0.255.21, 00:33:54, Ethernet0/0
+O IA     10.0.255.24/30 [110/20] via 10.0.255.21, 00:33:54, Ethernet0/0
+      172.168.0.0/16 is variably subnetted, 3 subnets, 2 masks
+O E1     172.168.0.0/21 [110/50] via 10.0.255.21, 00:33:15, Ethernet0/0
+O IA     172.168.254.0/30 [110/20] via 10.0.255.21, 00:33:54, Ethernet0/0
+O IA     172.168.254.4/30 [110/30] via 10.0.255.21, 00:33:15, Ethernet0/0
+O IA  192.168.0.0/24 [110/21] via 10.0.255.21, 00:32:59, Ethernet0/0
+R2(config)#do sh ip os int br
+Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C
+NV0          10    0               Unnumbered Et0/0   1785  P2P   0/0
+Et0/0        10    0               10.0.255.22/30     10    P2P   1/1
+R2(config)#do sh ip os int e0/0
+Ethernet0/0 is up, line protocol is up 
+  Internet Address 10.0.255.22/30, Area 0, Attached via Network Statement
+  Process ID 10, Router ID 3.3.3.3, Network Type POINT_TO_POINT, Cost: 10
+  Topology-MTID    Cost    Disabled    Shutdown      Topology Name
+        0           10        no          no            Base
+  Transmit Delay is 1 sec, State POINT_TO_POINT
+  Timer intervals configured, Hello 1, Dead 3, Wait 3, Retransmit 5
+    oob-resync timeout 40
+    Hello due in 00:00:00
+  Supports Link-local Signaling (LLS)
+  Cisco NSF helper support enabled
+  IETF NSF helper support enabled
+  Index 1/1/1, flood queue length 0
+  Next 0x0(0)/0x0(0)/0x0(0)
+  Last flood scan length is 2, maximum is 2
+  Last flood scan time is 0 msec, maximum is 1 msec
+  Neighbor Count is 1, Adjacent neighbor count is 1 
+    Adjacent with neighbor 1.1.1.1
+  Suppress hello for 0 neighbor(s)
+  Cryptographic authentication enabled
+    Sending SA: Key 1, Algorithm HMAC-SHA-512 - key chain R2
+
+
+    R2(config)#do sh route-map
+route-map ISP2, permit, sequence 10
+  Match clauses:
+    ip address (access-lists): NAT_ACL 
+  Set clauses:
+  Policy routing matches: 0 packets, 0 bytes
+route-map ISP3, permit, sequence 10
+  Match clauses:
+    ip address (access-lists): NAT_ACL 
+  Set clauses:
+  Policy routing matches: 0 packets, 0 bytes
+R2(config)#do sh ip access-lists 
+Extended IP access list NAT_ACL
+    10 permit ip 10.0.0.0 0.0.7.255 any
+    20 permit ip 172.168.0.0 0.0.7.255 any
+    30 permit ip 192.168.0.0 0.0.0.255 any
+
+  R2(config)#do sh ip sla sum
+IPSLAs Latest Operation Summary
+Codes: * active, ^ inactive, ~ pending
+
+ID           Type        Destination       Stats       Return      Last
+                                           (ms)        Code        Run 
+-----------------------------------------------------------------------
+*1           icmp-echo   196.0.0.1         RTT=2       OK          2 seconds ago
+                                                                                
+                                                                                
+                                                                                
+                                                                                
+
+R2(config)#do sh track
+Track 1
+  IP SLA 1 state
+  State is Up
+    2 changes, last change 00:35:00
+  Delay up 1 sec, down 1 sec
+  Latest operation return code: OK
+  Latest RTT (millisecs) 2
+  Tracked by:
+    Static IP Routing 0
+

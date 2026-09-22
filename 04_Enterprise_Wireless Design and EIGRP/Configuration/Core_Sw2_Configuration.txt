@@ -1,0 +1,583 @@
+
+banner motd ^
+------------------------------------------------------------
+[!] WARNING: This is a private lab configuration.
+[!] Property of: Ko Ko Thet Swe
+[!] Note: "Noted! I am from copy my lab!"
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service compress-config
+Core_Sw2(config)#
+
+hostname Core_Sw2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 9 $9$2DSXXvcHcX/CVt$nwjWUYbnRc9Hen2T1o/V2szjo1p33MjojZNzO7BVeFw
+!
+username admin privilege 15 secret 9 $9$mf3036Z.mNMbFN$UF1JWMVcv/8ZAVqzBY9DkFyyeOAqBAPrq6909e.zRXE
+no aaa new-model
+!
+!         
+!         
+!         
+!         
+vtp domain lab.com
+vtp mode transparent
+udld aggressive
+          
+no ip icmp rate-limit unreachable
+!         
+!         
+!         
+no ip domain-lookup
+ip domain-name lab.com
+ip cef    
+no ipv6 cef
+!         
+key chain Core2
+ key 1    
+   key-string 7 020507551B0306265E5E49
+   cryptographic-algorithm md5
+!         
+!         
+!         
+spanning-tree mode pvst
+spanning-tree extend system-id
+spanning-tree pathcost method long
+spanning-tree vlan 10-12 priority 4096
+spanning-tree vlan 13-15 priority 0
+!         
+vlan dot1q tag native 
+!         
+vlan 10   
+ name IT  
+!         
+vlan 11   
+ name Admin
+!         
+vlan 12   
+ name Marketing
+!         
+vlan 13   
+ name Accounting
+!         
+vlan 14   
+ name HR  
+!         
+vlan 100  
+ name Local
+!         
+vlan 999  
+ name NATIVE
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+interface Loopback0
+ description Router-ID
+ ip address 4.4.4.4 255.255.255.255
+!         
+interface Port-channel10
+ no switchport
+ ip address 192.168.255.2 255.255.255.252
+ ip access-group SNMP_And_SSH in
+ ip hello-interval eigrp 10 1
+ ip hold-time eigrp 10 3
+ lacp fast-switchover
+!         
+interface Port-channel12
+ switchport trunk allowed vlan 10-14
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ switchport nonegotiate
+ ip access-group SNMP_And_SSH in
+ lacp fast-switchover
+ spanning-tree link-type point-to-point
+!         
+interface Ethernet0/0
+ no switchport
+ no ip address
+ channel-group 10 mode active
+!         
+interface Ethernet0/1
+ no switchport
+ no ip address
+ channel-group 10 mode active
+!         
+interface Ethernet0/2
+ no switchport
+ no ip address
+ channel-group 10 mode active
+!         
+interface Ethernet0/3
+ no switchport
+ no ip address
+ channel-group 10 mode active
+!         
+interface Ethernet1/0
+ switchport trunk allowed vlan 10-14
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ switchport nonegotiate
+ duplex full
+ channel-group 12 mode active
+!         
+interface Ethernet1/1
+ switchport trunk allowed vlan 10-14
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ switchport nonegotiate
+ duplex full
+ channel-group 12 mode active
+!         
+interface Ethernet1/2
+ switchport trunk allowed vlan 10-14
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ switchport nonegotiate
+ duplex full
+ channel-group 12 mode active
+!         
+interface Ethernet1/3
+ switchport trunk allowed vlan 10-14
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+ switchport nonegotiate
+ duplex full
+ channel-group 12 mode active
+!         
+interface Ethernet2/0
+ switchport access vlan 100
+ switchport mode access
+ switchport nonegotiate
+ ip access-group SNMP_And_SSH in
+ duplex full
+!         
+interface Ethernet2/1
+!         
+interface Ethernet2/2
+!         
+interface Ethernet2/3
+!         
+interface Ethernet3/0
+!         
+interface Ethernet3/1
+!         
+interface Ethernet3/2
+!         
+interface Ethernet3/3
+!         
+interface Vlan1
+ no ip address
+ shutdown 
+!         
+interface Vlan10
+ description IT
+ ip address 10.0.0.2 255.255.255.0
+ ip helper-address 10.0.0.10 
+ standby version 2
+ standby 1 ip 10.0.0.3
+ standby 1 timers 1 3
+ standby 1 priority 150
+ standby 1 preempt
+ standby 1 authentication md5 key-string 7 030758051607325E5E
+ ip summary-address eigrp 10 10.0.0.0 255.255.248.0
+!         
+interface Vlan11
+ description Admin
+ ip address 10.0.1.2 255.255.255.0
+ ip helper-address 10.0.0.10 
+ standby version 2
+ standby 2 ip 10.0.1.3
+ standby 2 timers 1 3
+ standby 2 priority 150
+ standby 2 preempt
+ standby 2 authentication md5 key-string 7 08224F401911160502
+!         
+interface Vlan12
+ description Marketing
+ ip address 10.0.2.2 255.255.255.0
+ ip helper-address 10.0.0.10 
+ standby version 2
+ standby 3 ip 10.0.2.3
+ standby 3 timers 1 3
+ standby 3 priority 150
+ standby 3 preempt
+ standby 3 authentication md5 key-string 7 0110050A4B03151D31
+!         
+interface Vlan13
+ description Accounting
+ ip address 10.0.3.2 255.255.255.0
+ ip helper-address 10.0.0.10 
+ standby version 2
+ standby 4 ip 10.0.3.3
+ standby 4 timers 1 3
+ standby 4 priority 200
+ standby 4 preempt
+ standby 4 authentication md5 key-string 7 00071008145318141F
+!         
+interface Vlan14
+ description IT
+ ip address 10.0.4.2 255.255.255.0
+ ip helper-address 10.0.0.10 
+ standby version 2
+ standby 5 ip 10.0.4.3
+ standby 5 timers 1 3
+ standby 5 priority 200
+ standby 5 preempt
+ standby 5 authentication md5 key-string 7 00071008145318141F
+!         
+interface Vlan100
+ description Uplink_Edge2
+ ip address 10.0.255.4 255.255.255.240
+ ip authentication mode eigrp 10 md5
+ ip authentication key-chain eigrp 10 Core2
+ ip hello-interval eigrp 10 1
+ ip hold-time eigrp 10 3
+ ip summary-address eigrp 10 10.0.0.0 255.255.252.0
+!         
+!         
+router eigrp 10
+ network 10.0.0.0 0.0.7.255
+ network 10.0.255.4 0.0.0.0
+ network 192.168.255.2 0.0.0.0
+ passive-interface default
+ no passive-interface Port-channel10
+ no passive-interface Vlan100
+ no passive-interface Ethernet2/0
+ eigrp router-id 10.0.255.4
+ eigrp stub connected summary
+!         
+ip forward-protocol nd
+!         
+ip tcp synwait-time 5
+ip http server
+!         
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!         
+ip access-list standard VTY_ACL
+ permit 10.0.0.11
+!         
+ip access-list extended SNMP_And_SSH
+ permit tcp host 10.0.0.11 host 10.0.0.2 eq 22
+ permit udp host 10.0.0.12 host 10.0.0.2 eq snmp
+ deny   ip any host 10.0.0.2
+ permit ip any any
+!         
+!         
+!         
+snmp-server community lab RO SNMP_And_SSH
+snmp-server location Lab.com
+snmp-server contact +9510300431 
+snmp-server host 10.0.0.12 version 2c lab 
+!         
+control-plane
+!         
+banner motd ^C UNAUTHORIZED ACCESS TO THIS ROUTER IS STRICTLY PROHIBITED!
+Violators will be prosecuted to the fullest extent of the law.
+--------------------------------------------------------------------^C
+!         
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ access-class VTY_ACL in
+logging synchronous
+ login local
+ transport input ssh
+Core_Sw2#sh vl br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Et2/1, Et2/2, Et2/3, Et3/0
+                                                Et3/1, Et3/2, Et3/3
+10   IT                               active    
+11   Admin                            active    
+12   Marketing                        active    
+13   Accounting                       active    
+14   HR                               active    
+100  Local                            active    Et2/0
+999  NATIVE                           active    
+1002 fddi-default                     act/unsup 
+1003 trcrf-default                    act/unsup 
+1004 fddinet-default                  act/unsup 
+1005 trbrf-default                    act/unsup 
+
+Core_Sw2#sh vtp status 
+VTP Version capable             : 1 to 3
+VTP version running             : 2
+VTP Domain Name                 : lab.com
+VTP Pruning Mode                : Disabled
+VTP Traps Generation            : Disabled
+Device ID                       : aabb.cc80.0400
+Configuration last modified by 0.0.0.0 at 0-0-00 00:00:00
+
+Feature VLAN:
+--------------
+VTP Operating Mode                : Transparent
+Maximum VLANs supported locally   : 1005
+Number of existing VLANs          : 12
+Configuration Revision            : 0
+MD5 digest                        : 0x53 0x74 0xE4 0x0F 0xE8 0x22 0xEC 0x0E 
+                                    0xBD 0x6A 0x05 0x3F 0x1E 0x8C 0x9D 0x3A 
+Core_Sw2#sh spanning-tree 
+
+VLAN0010
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    10
+             Address     aabb.cc00.0300
+             Cost        1000000
+             Port        66 (Port-channel12)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    4106   (priority 4096 sys-id-ext 10)
+             Address     aabb.cc00.0400
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po12                Root FWD 500000    128.66   P2p 
+
+
+          
+VLAN0011
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    11
+             Address     aabb.cc00.0300
+             Cost        1000000
+             Port        66 (Port-channel12)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    4107   (priority 4096 sys-id-ext 11)
+             Address     aabb.cc00.0400
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po12                Root FWD 500000    128.66   P2p 
+
+
+          
+VLAN0012
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    12
+             Address     aabb.cc00.0300
+             Cost        1000000
+             Port        66 (Port-channel12)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    4108   (priority 4096 sys-id-ext 12)
+             Address     aabb.cc00.0400
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po12                Root FWD 500000    128.66   P2p 
+
+
+          
+VLAN0013
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    13
+             Address     aabb.cc00.0400
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    13     (priority 0 sys-id-ext 13)
+             Address     aabb.cc00.0400
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po12                Desg FWD 500000    128.66   P2p 
+
+
+          
+VLAN0014
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    14
+             Address     aabb.cc00.0400
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    14     (priority 0 sys-id-ext 14)
+             Address     aabb.cc00.0400
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Po12                Desg FWD 500000    128.66   P2p 
+
+
+          
+VLAN0100
+  Spanning tree enabled protocol ieee
+  Root ID    Priority    32868
+             Address     aabb.cc00.0400
+             This bridge is the root
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32868  (priority 32768 sys-id-ext 100)
+             Address     aabb.cc00.0400
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et2/0               Desg FWD 2000000   128.9    P2p 
+
+Core_Sw2#sh etherch sum 
+Flags:  D - down        P - bundled in port-channel
+        I - stand-alone s - suspended
+        H - Hot-standby (LACP only)
+        R - Layer3      S - Layer2
+        U - in use      N - not in use, no aggregation
+        f - failed to allocate aggregator
+
+        M - not in use, minimum links not met
+        m - not in use, port not aggregated due to minimum links not met
+        u - unsuitable for bundling
+        w - waiting to be aggregated
+        d - default port
+
+        A - formed by Auto LAG
+
+
+Number of channel-groups in use: 2
+Number of aggregators:           2
+
+Group  Port-channel  Protocol    Ports
+------+-------------+-----------+-----------------------------------------------
+10     Po10(RU)        LACP      Et0/0(P)    Et0/1(P)    Et0/2(P)    
+                                 Et0/3(P)    
+12     Po12(SU)        LACP      Et1/0(P)    Et1/1(P)    Et1/2(P)    
+                                 Et1/3(P)    
+
+Core_Sw2#sh ip int br | ex unas
+Interface              IP-Address      OK? Method Status                Protocol
+Loopback0              4.4.4.4         YES NVRAM  up                    up      
+Port-channel10         192.168.255.2   YES NVRAM  up                    up      
+Vlan10                 10.0.0.2        YES NVRAM  up                    up      
+Vlan11                 10.0.1.2        YES NVRAM  up                    up      
+Vlan12                 10.0.2.2        YES NVRAM  up                    up      
+Vlan13                 10.0.3.2        YES NVRAM  up                    up      
+Vlan14                 10.0.4.2        YES NVRAM  up                    up      
+Vlan100                10.0.255.4      YES NVRAM  up                    up      
+Core_Sw2#sh run int vlan 100
+Building configuration...
+
+Current configuration : 278 bytes
+!
+interface Vlan100
+ description Uplink_Edge2
+ ip address 10.0.255.4 255.255.255.240
+ ip authentication mode eigrp 10 md5
+ ip authentication key-chain eigrp 10 Core2
+ ip hello-interval eigrp 10 1
+ ip hold-time eigrp 10 3
+ ip summary-address eigrp 10 10.0.0.0 255.255.252.0
+end
+
+Core_Sw2#sh run int po10
+Building configuration...
+
+Current configuration : 199 bytes
+!
+interface Port-channel10
+ no switchport
+ ip address 192.168.255.2 255.255.255.252
+ ip access-group SNMP_And_SSH in
+ ip hello-interval eigrp 10 1
+ ip hold-time eigrp 10 3
+ lacp fast-switchover
+endCore_Sw2#sh ip route eigrp 
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override, p - overrides from PfR
+
+Gateway of last resort is 10.0.255.2 to network 0.0.0.0
+
+D*    0.0.0.0/0 [90/281856] via 10.0.255.2, 00:25:16, Vlan100
+      10.0.0.0/8 is variably subnetted, 13 subnets, 4 masks
+D        10.0.0.0/22 is a summary, 00:27:51, Null0
+Core_Sw2#sh ip eigrp ne
+EIGRP-IPv4 Neighbors for AS(10)
+H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq
+                                                   (sec)         (ms)       Cnt Num
+1   10.0.255.2              Vl100                     2 00:25:36    8   100  0  4
+0   192.168.255.1           Po10                      2 00:28:45 1025  5000  0  5
+Core_Sw2#sh ip eigrp topology sum
+EIGRP-IPv4 Topology Table Summary for AS(10)/ID(10.0.255.4)
+  Head serial 1, next serial 22
+  9 routes, 0 pending replies, 0 dummies
+  Enabled on 2 interfaces, 2 neighbors present on 2 interfaces
+  Quiescent interfaces: 
+    Po10
+    Vl100
+Core_Sw2#sh ip eigrp interfaces detail e2/0
+EIGRP-IPv4 Interfaces for AS(10)
+                              Xmit Queue   PeerQ        Mean   Pacing Time   Multicast    Pending
+Interface              Peers  Un/Reliable  Un/Reliable  SRTT   Un/Reliable   Flow Timer   Routes
+
+
+EIGRP-IPv4 Interfaces for AS(10)
+                              Xmit Queue   PeerQ        Mean   Pacing Time   Multicast    Pending
+Interface              Peers  Un/Reliable  Un/Reliable  SRTT   Un/Reliable   Flow Timer   Routes
+Po10                     1        0/0       0/0        1025       0/0         5120           0
+  Hello-interval is 1, Hold-time is 3
+  Split-horizon is enabled
+  Next xmit serial <none>
+  Packetized sent/expedited: 6/0
+  Hello's sent/expedited: 1934/2
+  Un/reliable mcasts: 0/4  Un/reliable ucasts: 5/2
+  Mcast exceptions: 0  CR packets: 0  ACKs suppressed: 0
+  Retransmissions sent: 1  Out-of-sequence rcvd: 0
+  Topology-ids on interface - 0 
+  Authentication mode is not set
+  Topologies advertised on this interface:  base
+  Topologies not advertised on this interface:
+Core_Sw2#sh run | se snmp
+ permit udp host 10.0.0.12 host 10.0.0.2 eq snmp
+snmp-server community lab RO SNMP_And_SSH
+snmp-server location Lab.com
+snmp-server contact +9510300431 
+snmp-server host 10.0.0.12 version 2c lab 
+#write memory

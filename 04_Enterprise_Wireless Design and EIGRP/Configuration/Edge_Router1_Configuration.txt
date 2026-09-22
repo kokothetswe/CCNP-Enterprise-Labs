@@ -1,0 +1,223 @@
+
+banner motd ^
+------------------------------------------------------------
+[!] WARNING: This is a private lab configuration.
+[!] Property of: Ko Ko Thet Swe
+[!] Note: "Noted! I am from copy my lab!"
+-----------------------------------------------------
+Edge_Router1#sh ip int br | ex unas
+Interface                  IP-Address      OK? Method Status                Protocol
+Ethernet0/0                10.0.255.1      YES NVRAM  up                    up      
+Ethernet0/1                100.81.0.2      YES NVRAM  up                    up      
+Loopback0                  1.1.1.1         YES NVRAM  up                    up        
+NVI0                       10.0.255.1      YES unset  up                    up      
+Edge_Router1#sh run int e0/0
+Building configuration...
+
+Current configuration : 349 bytes
+!
+interface Ethernet0/0
+ description Downlink_Cs1
+ ip address 10.0.255.1 255.255.255.240
+ ip access-group SNMP_And_SSH in
+ ip authentication mode eigrp 10 md5
+ ip authentication key-chain eigrp 10 Edge1
+ ip hello-interval eigrp 10 1
+ ip hold-time eigrp 10 3
+ ip nat inside
+ ip virtual-reassembly in
+ ip summary-address eigrp 10 0.0.0.0 0.0.0.0
+end
+Edge_Router1#sh run int e0/1
+Building configuration...
+
+Current configuration : 167 bytes
+!
+interface Ethernet0/1
+ description Uplink_ISP
+ ip address 100.81.0.2 255.255.255.252
+ ip access-group SNMP_And_SSH in
+ ip nat outside
+ ip virtual-reassembly in
+endip domain name lab.com
+ip cef    
+no ipv6 cef
+!         
+multilink bundle-name authenticated
+!         
+!         
+key chain Edge1
+ key 1    
+  key-string 7 070C22425E0C10020502
+  cryptographic-algorithm md5
+!         username admin privilege 15 secret 9 $9$lbXDfgafKLuyHq$APkAt9lxC2lUHFhGCbTfpsHHovbJ4XrzFkcgmDrXs7s
+
+redundancy
+!         
+no cdp log mismatch duplex
+!         
+track 1 ip sla 1
+ delay down 1 up 1
+!         
+ip tcp synwait-time 5
+ip ssh version 2
+interface Loopback0
+ description Router-ID
+ ip address 1.1.1.1 255.255.255.255
+interface Ethernet0/0
+ description Downlink_Cs1
+ ip address 10.0.255.1 255.255.255.240
+ ip access-group SNMP_And_SSH in
+ ip authentication mode eigrp 10 md5
+ ip authentication key-chain eigrp 10 Edge1
+ ip hello-interval eigrp 10 1
+ ip hold-time eigrp 10 3
+ ip nat inside
+ ip virtual-reassembly in
+ ip summary-address eigrp 10 0.0.0.0 0.0.0.0
+!         
+interface Ethernet0/1
+ description Uplink_ISP
+ ip address 100.81.0.2 255.255.255.252
+ ip access-group SNMP_And_SSH in
+ ip nat outside
+ ip virtual-reassembly in
+!         
+interface Ethernet0/2
+ no ip address
+!         
+interface Ethernet0/3
+ no ip address
+
+
+router eigrp 10
+ no default-information in
+ network 10.0.255.1 0.0.0.0
+ eigrp router-id 1.1.1.1
+!         
+ip forward-protocol nd
+!         
+!         
+no ip http server
+no ip http secure-server
+ip nat inside source list NAT_ACL interface Ethernet0/1 overload
+ip route 0.0.0.0 0.0.0.0 100.81.0.1 name ISP track 1
+!         
+ip access-list standard VTY_ACL
+ permit 10.0.0.11
+!         
+ip access-list extended NAT_ACL
+ deny   ip 10.0.0.0 0.0.0.255 any
+ permit ip 10.0.0.0 0.0.7.255 any
+ip access-list extended SNMP_And_SSH
+ permit udp host 10.0.0.12 host 10.0.255.1 eq snmp
+ permit tcp host 10.0.0.11 host 10.0.255.1 eq 22
+ deny   ip any host 10.0.255.1
+ permit ip any any
+!         
+ip sla 1  
+ icmp-echo 100.81.0.1
+ threshold 250
+ timeout 300
+ frequency 5
+ip sla schedule 1 life forever start-time now
+
+banner motd ^C UNAUTHORIZED ACCESS TO THIS ROUTER IS STRICTLY PROHIBITED!
+Violators will be prosecuted to the fullest extent of the law.
+--------------------------------------------------------------------^C
+!         
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ access-class VTY_ACL in
+ logging synchronous
+ login local
+ transport input ssh
+
+Edge_Router1#sh ip eigrp neighbors 
+EIGRP-IPv4 Neighbors for AS(10)
+H   Address                 Interface              Hold Uptime   SRTT   RTO  Q  Seq
+                                                   (sec)         (ms)       Cnt Num
+0   10.0.255.3              Et0/0                     2 00:32:50 1279  5000  0  8
+Edge_Router1#sh ip eigrp topology 
+EIGRP-IPv4 Topology Table for AS(10)/ID(1.1.1.1)
+Codes: P - Passive, A - Active, U - Update, Q - Query, R - Reply,
+       r - reply Status, s - sia Status 
+
+P 10.0.0.0/21, 1 successors, FD is 281856
+        via 10.0.255.3 (281856/2816), Ethernet0/0
+P 0.0.0.0/0, 1 successors, FD is 281600
+        via Summary (281600/0), Null0
+P 192.168.255.0/30, 1 successors, FD is 307200
+        via 10.0.255.3 (307200/89600), Ethernet0/0
+P 10.0.255.0/28, 1 successors, FD is 281600
+        via Connected, Ethernet0/0
+Edge_Router1#sh ip eigrp topology detail-links 
+EIGRP-IPv4 Topology Table for AS(10)/ID(1.1.1.1)
+Codes: P - Passive, A - Active, U - Update, Q - Query, R - Reply,
+       r - reply Status, s - sia Status 
+
+P 10.0.0.0/21, 1 successors, FD is 281856, serno 4
+        via 10.0.255.3 (281856/2816), Ethernet0/0
+P 0.0.0.0/0, 1 successors, FD is 281600, serno 6
+        via Summary (281600/0), Null0
+P 192.168.255.0/30, 1 successors, FD is 307200, serno 3
+        via 10.0.255.3 (307200/89600), Ethernet0/0
+P 10.0.255.0/28, 1 successors, FD is 281600, serno 1
+        via Connected, Ethernet0/0
+Edge_Router1#sh ip eigrp interfaces detail e0/0
+EIGRP-IPv4 Interfaces for AS(10)
+                              Xmit Queue   PeerQ        Mean   Pacing Time   Multicast    Pending
+Interface              Peers  Un/Reliable  Un/Reliable  SRTT   Un/Reliable   Flow Timer   Routes
+Et0/0                    1        0/0       0/0        1279       0/2         6396           0
+  Hello-interval is 1, Hold-time is 3
+  Split-horizon is enabled
+  Next xmit serial <none>
+  Packetized sent/expedited: 3/0
+  Hello's sent/expedited: 2184/2
+  Un/reliable mcasts: 0/3  Un/reliable ucasts: 3/2
+  Mcast exceptions: 0  CR packets: 0  ACKs suppressed: 0
+  Retransmissions sent: 1  Out-of-sequence rcvd: 0
+  Interface has all stub peers
+  Topology-ids on interface - 0 
+  Authentication mode is md5,  key-chain is "Edge1"
+Edge_Router1#sh ip route eigrp 
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is 100.81.0.1 to network 0.0.0.0
+
+      10.0.0.0/8 is variably subnetted, 5 subnets, 4 masks
+D        10.0.0.0/21 [90/281856] via 10.0.255.3, 00:34:01, Ethernet0/0
+      192.168.255.0/30 is subnetted, 1 subnets
+D        192.168.255.0 [90/307200] via 10.0.255.3, 00:34:01, Ethernet0/0
+Edge_Router1(config)#do sh ip acces
+Standard IP access list VTY_ACL
+    10 permit 10.0.0.11
+Extended IP access list NAT_ACL
+    10 deny ip 10.0.0.0 0.0.0.255 any
+    20 permit ip 10.0.0.0 0.0.7.255 any
+Extended IP access list SNMP_And_SSH
+    10 permit tcp host 10.0.0.11 host 10.0.255.1 eq 22
+    20 permit udp host 10.0.0.12 host 10.0.255.1 eq snmp
+    30 deny ip any host 10.0.255.1 (5 matches)
+    40 permit ip any any (24 matches)
+
+Edge_Router1#sh run | se nat
+ ip nat inside
+ ip nat outside
+ip nat inside source list NAT_ACL interface Ethernet0/1 overload
+#Wr memory

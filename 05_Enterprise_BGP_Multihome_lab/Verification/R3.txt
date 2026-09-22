@@ -1,0 +1,96 @@
+! =========================================
+! R3 - Enterprise Multihomed BGP Lab
+! AS 100
+! =========================================
+R3#sh ip os ne
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+4.4.4.4           0   FULL/  -        00:00:02    10.0.14.1       Ethernet0/1
+1.1.1.1           0   FULL/  -        00:00:02    10.0.13.1       Ethernet0/0
+R3#sh ip os int br
+Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C
+Lo0          10    0               3.3.3.3/32         1     LOOP  0/0
+Et0/1        10    0               10.0.14.2/30       10    P2P   1/1
+Et0/0        10    0               10.0.13.2/30       10    P2P   1/1
+R3#sh ip os ne e0/0
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+1.1.1.1           0   FULL/  -        00:00:02    10.0.13.1       Ethernet0/0
+
+
+R3#sh ip os int e0/0 
+Ethernet0/0 is up, line protocol is up (connected) 
+  Internet Address 10.0.13.2/30, Area 0, Attached via Interface Enable
+  Process ID 10, Router ID 3.3.3.3, Network Type POINT_TO_POINT, Cost: 10
+  Topology-MTID    Cost    Disabled    Shutdown      Topology Name
+        0           10        no          no            Base
+  Enabled by interface config, including secondary ip addresses
+  Transmit Delay is 1 sec, State POINT_TO_POINT
+  Timer intervals configured, Hello 1, Dead 3, Wait 3, Retransmit 5
+    oob-resync timeout 40
+    Hello due in 00:00:00
+  Supports Link-local Signaling (LLS)
+  Cisco NSF helper support enabled
+  IETF NSF helper support enabled
+  Index 1/1, flood queue length 0
+  Next 0x0(0)/0x0(0)
+  Last flood scan length is 1, maximum is 1
+  Last flood scan time is 0 msec, maximum is 0 msec
+  Neighbor Count is 1, Adjacent neighbor count is 1 
+    Adjacent with neighbor 1.1.1.1
+  Suppress hello for 0 neighbor(s)
+R3#sh ip bgp sum
+BGP router identifier 3.3.3.3, local AS number 100
+BGP table version is 3, main routing table version 3
+2 network entries using 280 bytes of memory
+2 path entries using 152 bytes of memory
+2/2 BGP path/bestpath attribute entries using 272 bytes of memory
+2 BGP AS-PATH entries using 48 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 752 total bytes of memory
+BGP activity 2/0 prefixes, 2/0 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+1.1.1.1         4          100      93      93        3    0    0 01:20:51        1
+4.4.4.4         4          100      91      89        3    0    0 01:17:19        1
+R3#sh ip bgp 
+BGP table version is 3, local router ID is 3.3.3.3
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>i 192.168.5.0      1.1.1.1                  0    100      0 500 i
+ *>i 192.168.6.0      4.4.4.4                  0    100      0 600 i
+R3#sh ip bgp ne
+R3#sh ip bgp nei
+R3#sh ip bgp neighbors 1.1.1.1 ad
+R3#sh ip bgp neighbors 1.1.1.1 advertised-routes 
+
+Total number of prefixes 0 
+R3#sh ip bgp neighbors 4.4.4.4 ad                
+R3#sh ip bgp neighbors 4.4.4.4 advertised-routes 
+
+Total number of prefixes 0 
+R3#sh ip bgp nei
+R3#sh ip bgp neighbors 5.5.5.5 ad
+R3#sh ip bgp neighbors 5.5.5.5 advertised-routes 
+% No such neighbor or address family
+R3#sh ip route bgp 
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+B     192.168.5.0/24 [200/0] via 1.1.1.1, 01:21:21
+B     192.168.6.0/24 [200/0] via 4.4.4.4, 01:17:49
+R3#

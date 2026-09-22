@@ -1,0 +1,132 @@
+Edge2#sh running-config 
+Building configuration...
+
+Current configuration : 1469 bytes
+!
+! Last configuration change at 07:21:31 UTC Tue Sep 22 2026
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname Edge2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+          
+          
+!         
+!         
+!         
+!         
+ip multicast-routing 
+ip cef    
+no ipv6 cef
+!         
+multilink bundle-name authenticated
+!         
+!         
+key chain Edge2
+ key 1    
+  key-string 7 0110050A4B04151F27
+  cryptographic-algorithm md5
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+redundancy
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+interface Loopback0
+ description router_ID
+ ip address 2.2.2.2 255.255.255.255
+ shutdown 
+!         
+interface Ethernet0/0
+ description Edge2_Transist
+ ip address 192.168.255.6 255.255.255.252
+ ip pim dense-mode
+ ip ospf authentication key-chain Edge2
+ ip ospf network point-to-point
+ ip ospf dead-interval 3
+ ip ospf hello-interval 1
+!         
+interface Ethernet0/1
+ ip address 192.168.2.1 255.255.255.0
+ ip pim dense-mode
+!         
+interface Ethernet0/2
+ no ip address
+ shutdown 
+!         
+interface Ethernet0/3
+ no ip address
+ shutdown 
+!         
+router ospf 1
+ router-id 2.2.2.2
+ passive-interface default
+ no passive-interface Ethernet0/0
+ network 192.168.2.0 0.0.0.255 area 1
+ network 192.168.255.6 0.0.0.0 area 1
+!         
+ip forward-protocol nd
+!         
+!         
+no ip http server
+no ip http secure-server
+!         
+!         
+!         
+!         
+control-plane
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+!         
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login    
+ transport input none
+!         
+!         

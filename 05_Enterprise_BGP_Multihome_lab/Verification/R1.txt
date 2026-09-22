@@ -1,0 +1,43 @@
+! =========================================
+! R1 - Enterprise Multihomed BGP Lab
+! AS 100
+! =========================================
+R1#sh ip bgp sum
+BGP router identifier 1.1.1.1, local AS number 100
+BGP table version is 3, main routing table version 3
+2 network entries using 280 bytes of memory
+2 path entries using 152 bytes of memory
+2/2 BGP path/bestpath attribute entries using 272 bytes of memory
+2 BGP AS-PATH entries using 48 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 752 total bytes of memory
+BGP activity 2/0 prefixes, 2/0 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+2.2.2.2         4          100      95      96        3    0    0 01:23:10        0
+3.3.3.3         4          100      88      88        3    0    0 01:16:41        0
+4.4.4.4         4          100     125     123        3    0    0 01:47:15        1
+5.5.5.5         4          500     131     131        3    0    0 01:55:42        1
+
+R1#sh ip bgp 
+BGP table version is 3, local router ID is 1.1.1.1
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  192.168.5.0      5.5.5.5                  0             0 500 i
+ *>i 192.168.6.0      4.4.4.4                  0    100      0 600 i
+R1#sh ip bgp neighbors 5.5.5.5 advertised-routes 
+BGP table version is 3, local router ID is 1.1.1.1
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>i 192.168.6.0      4.4.4.4                  0    100      0 600 i

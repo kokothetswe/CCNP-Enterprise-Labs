@@ -1,0 +1,134 @@
+[admin@MikroTik] > /ip address/print detail 
+Flags: X - disabled, I - invalid, D - dynamic 
+ 0   address=10.0.255.26/30 network=10.0.255.24 interface=ether1 actual-interface=ether1 
+
+ 1   address=192.168.255.10/32 network=192.168.255.10 interface=loopback0 actual-interface=loopback0 
+
+ 2   address=192.168.0.1/24 network=192.168.0.0 interface=ether2 actual-interface=ether2 
+[admin@MikroTik] > /ip route/print 
+Flags: D - DYNAMIC; A - ACTIVE; c, o, y - COPY
+Columns: DST-ADDRESS, GATEWAY, DISTANCE
+    DST-ADDRESS        GATEWAY             DISTANCE
+DAo 0.0.0.0/0          10.0.255.25%ether1       110
+DAo 10.0.255.16/30     10.0.255.25%ether1       110
+DAo 10.0.255.20/30     10.0.255.25%ether1       110
+DAc 10.0.255.24/30     ether1                     0
+DAo 172.168.0.0/21     10.0.255.25%ether1       110
+DAo 172.168.254.0/30   10.0.255.25%ether1       110
+DAo 172.168.254.4/30   10.0.255.25%ether1       110
+DAc 192.168.0.0/24     ether2                     0
+DAc 192.168.255.10/32  loopback0                  0
+[admin@MikroTik] > /ip route/print detail 
+Flags: D - dynamic; X - disabled, I - inactive, A - active; 
+c - connect, s - static, r - rip, b - bgp, o - ospf, d - dhcp, v - vpn, m - modem, y - copy; H - hw-offloaded; + - ecmp 
+   DAo   dst-address=0.0.0.0/0 routing-table=main gateway=10.0.255.25%ether1 immediate-gw=10.0.255.25%ether1 distance=110 scope=20 target-scope=10 
+         suppress-hw-offload=no 
+
+   DAo   dst-address=10.0.255.16/30 routing-table=main gateway=10.0.255.25%ether1 immediate-gw=10.0.255.25%ether1 distance=110 scope=20 
+         target-scope=10 suppress-hw-offload=no 
+
+   DAo   dst-address=10.0.255.20/30 routing-table=main gateway=10.0.255.25%ether1 immediate-gw=10.0.255.25%ether1 distance=110 scope=20 
+         target-scope=10 suppress-hw-offload=no 
+
+   DAc   dst-address=10.0.255.24/30 routing-table=main gateway=ether1 immediate-gw=ether1 distance=0 scope=10 suppress-hw-offload=no 
+         local-address=10.0.255.26%ether1 
+
+   DAo   dst-address=172.168.0.0/21 routing-table=main gateway=10.0.255.25%ether1 immediate-gw=10.0.255.25%ether1 distance=110 scope=20 
+         target-scope=10 suppress-hw-offload=no 
+
+   DAo   dst-address=172.168.254.0/30 routing-table=main gateway=10.0.255.25%ether1 immediate-gw=10.0.255.25%ether1 distance=110 scope=20 
+         target-scope=10 suppress-hw-offload=no 
+
+   DAo   dst-address=172.168.254.4/30 routing-table=main gateway=10.0.255.25%ether1 immediate-gw=10.0.255.25%ether1 distance=110 scope=20 
+         target-scope=10 suppress-hw-offload=no 
+
+   DAc   dst-address=192.168.0.0/24 routing-table=main gateway=ether2 immediate-gw=ether2 distance=0 scope=10 suppress-hw-offload=no 
+         local-address=192.168.0.1%ether2 
+
+   DAc   dst-address=192.168.255.10/32 routing-table=main gateway=loopback0 immediate-gw=loopback0 distance=0 scope=10 suppress-hw-offload=no 
+         local-address=192.168.255.10%loopback0 
+#ping DMZ_SVR loopback
+[admin@MikroTik] > /ping 172.168.0.1
+  SEQ HOST                                     SIZE TTL TIME       STATUS                                                                         
+    0 172.168.0.1                                56 253 4ms626us  
+    1 172.168.0.1                                56 253 3ms784us  
+    2 172.168.0.1                                56 253 3ms945us  
+    3 172.168.0.1                                56 253 4ms11us   
+    4 172.168.0.1                                56 253 4ms262us  
+    5 172.168.0.1                                56 253 5ms155us  
+    6 172.168.0.1                                56 253 6ms6us    
+    7 172.168.0.1                                56 253 5ms565us  
+    8 172.168.0.1                                56 253 4ms111us  
+
+[admin@MikroTik] > /routing ospf neighbor/print detail 
+Flags: V - virtual; D - dynamic 
+ 0  D instance=ospf1 area=area10 address=10.0.255.25 router-id=1.1.1.1 state="Full" state-changes=5 adjacency=40m timeout=2s 
+
+Beside of Mikrotik Client ip to ping 8.8.8.8 and DMZ and Vlan2020-2023 and vlan 10-13
+VPC> sh ip
+
+NAME        : VPC[1]
+IP/MASK     : 192.168.0.254/24
+GATEWAY     : 192.168.0.1
+DNS         : 8.8.8.8  
+DHCP SERVER : 192.168.0.1
+DHCP LEASE  : 596, 600/300/525
+DOMAIN NAME : lab.com
+MAC         : 00:50:79:66:68:e0
+LPORT       : 20000
+RHOST:PORT  : 127.0.0.1:30000
+MTU         : 1500
+VPC> ping 172.168.7.1  
+
+84 bytes from 172.168.7.1 icmp_seq=1 ttl=252 time=4.799 ms
+84 bytes from 172.168.7.1 icmp_seq=2 ttl=252 time=6.138 ms
+84 bytes from 172.168.7.1 icmp_seq=3 ttl=252 time=5.441 ms
+84 bytes from 172.168.7.1 icmp_seq=4 ttl=252 time=4.291 ms
+^C
+VPC> ping 8.8.8.8
+
+84 bytes from 8.8.8.8 icmp_seq=1 ttl=252 time=6.973 ms
+84 bytes from 8.8.8.8 icmp_seq=2 ttl=252 time=6.262 ms
+84 bytes from 8.8.8.8 icmp_seq=3 ttl=252 time=8.561 ms
+84 bytes from 8.8.8.8 icmp_seq=4 ttl=252 time=5.512 ms
+^C
+VPC> ping 10.0.0.3
+
+10.0.0.3 icmp_seq=1 timeout
+84 bytes from 10.0.0.3 icmp_seq=2 ttl=253 time=6.118 ms
+84 bytes from 10.0.0.3 icmp_seq=3 ttl=253 time=7.490 ms
+84 bytes from 10.0.0.3 icmp_seq=4 ttl=253 time=4.488 ms
+^C
+VPC> ping 10.0.1.3
+
+84 bytes from 10.0.1.3 icmp_seq=1 ttl=253 time=4.046 ms
+84 bytes from 10.0.1.3 icmp_seq=2 ttl=253 time=2.329 ms
+^C
+VPC> ping 10.0.2.3
+
+84 bytes from 10.0.2.3 icmp_seq=1 ttl=253 time=3.235 ms
+84 bytes from 10.0.2.3 icmp_seq=2 ttl=253 time=2.112 ms
+^C
+VPC> ping 10.0.3.3
+
+84 bytes from 10.0.3.3 icmp_seq=1 ttl=253 time=3.436 ms
+84 bytes from 10.0.3.3 icmp_seq=2 ttl=253 time=3.567 ms
+^C
+VPC> ping 10.0.4.3
+
+10.0.4.3 icmp_seq=1 timeout
+84 bytes from 10.0.4.3 icmp_seq=2 ttl=252 time=3.319 ms
+84 bytes from 10.0.4.3 icmp_seq=3 ttl=252 time=3.907 ms
+84 bytes from 10.0.4.3 icmp_seq=4 ttl=252 time=3.723 ms
+^C
+VPC> ping 10.0.5.3
+
+10.0.5.3 icmp_seq=1 timeout
+84 bytes from 10.0.5.3 icmp_seq=2 ttl=252 time=3.228 ms
+84 bytes from 10.0.5.3 icmp_seq=3 ttl=252 time=3.403 ms
+^C
+
+
+
+
+

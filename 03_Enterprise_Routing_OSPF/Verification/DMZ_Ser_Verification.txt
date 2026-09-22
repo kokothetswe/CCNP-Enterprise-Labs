@@ -1,0 +1,35 @@
+DMZ-SERVER#sh ip route os
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area 
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override, p - overrides from PfR
+
+Gateway of last resort is 172.168.254.5 to network 0.0.0.0
+
+O*E1  0.0.0.0/0 [110/31] via 172.168.254.5, 00:35:33, Ethernet0/0
+      10.0.0.0/30 is subnetted, 3 subnets
+O IA     10.0.255.16 [110/30] via 172.168.254.5, 00:35:43, Ethernet0/0
+O IA     10.0.255.20 [110/30] via 172.168.254.5, 00:35:43, Ethernet0/0
+O IA     10.0.255.24 [110/30] via 172.168.254.5, 00:35:43, Ethernet0/0
+      172.168.0.0/16 is variably subnetted, 21 subnets, 4 masks
+O        172.168.0.0/21 is a summary, 00:35:56, Null0
+O IA     172.168.254.0/30 [110/20] via 172.168.254.5, 00:35:43, Ethernet0/0
+O IA  192.168.0.0/24 [110/31] via 172.168.254.5, 00:35:16, Ethernet0/0
+
+
+#Ping MikroTik Area-10
+DMZ-SERVER#ping 192.168.0.254
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.0.254, timeout is 2 seconds:
+.U.U.
+Success rate is 0 percent (0/5)
+DMZ-SERVER#ping 192.168.0.1  
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.0.1, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 4/5/8 ms

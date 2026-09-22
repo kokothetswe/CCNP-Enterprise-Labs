@@ -1,0 +1,140 @@
+! =========================================
+! R4 - Enterprise Multihomed BGP Lab
+! AS 100
+! =========================================
+R4#sh ip os ne
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+3.3.3.3           0   FULL/  -        00:00:02    10.0.14.2       Ethernet0/1
+2.2.2.2           0   FULL/  -        00:00:02    10.0.15.2       Ethernet0/0
+R4#sh ip os int br
+Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C
+Lo0          10    0               4.4.4.4/32         1     LOOP  0/0
+Et0/1        10    0               10.0.14.1/30       10    P2P   1/1
+Et0/0        10    0               10.0.15.1/30       10    P2P   1/1
+R4#sh ip os int e0/0
+Ethernet0/0 is up, line protocol is up (connected) 
+  Internet Address 10.0.15.1/30, Area 0, Attached via Interface Enable
+  Process ID 10, Router ID 4.4.4.4, Network Type POINT_TO_POINT, Cost: 10
+  Topology-MTID    Cost    Disabled    Shutdown      Topology Name
+        0           10        no          no            Base
+  Enabled by interface config, including secondary ip addresses
+  Transmit Delay is 1 sec, State POINT_TO_POINT
+  Timer intervals configured, Hello 1, Dead 3, Wait 3, Retransmit 5
+    oob-resync timeout 40
+    Hello due in 00:00:00
+  Supports Link-local Signaling (LLS)
+  Cisco NSF helper support enabled
+  IETF NSF helper support enabled
+  Index 1/1, flood queue length 0
+  Next 0x0(0)/0x0(0)
+  Last flood scan length is 1, maximum is 1
+  Last flood scan time is 0 msec, maximum is 0 msec
+  Neighbor Count is 1, Adjacent neighbor count is 1 
+    Adjacent with neighbor 2.2.2.2
+  Suppress hello for 0 neighbor(s)
+R4#sh ip bgp ne
+R4#sh ip bgp nei
+R4#sh ip bgp sum        
+BGP router identifier 4.4.4.4, local AS number 100
+BGP table version is 3, main routing table version 3
+2 network entries using 280 bytes of memory
+2 path entries using 152 bytes of memory
+2/2 BGP path/bestpath attribute entries using 272 bytes of memory
+2 BGP AS-PATH entries using 48 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 752 total bytes of memory
+BGP activity 2/0 prefixes, 2/0 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+1.1.1.1         4          100     129     132        3    0    0 01:53:32        1
+2.2.2.2         4          100     100     100        3    0    0 01:26:30        0
+3.3.3.3         4          100      92      93        3    0    0 01:19:26        0
+10.0.46.2       4          600     150     148        3    0    0 02:10:47        1
+R4#sh ip bgp 
+BGP table version is 3, local router ID is 4.4.4.4
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>i 192.168.5.0      1.1.1.1                  0    100      0 500 i
+ *>  192.168.6.0      10.0.46.2                0             0 600 i
+R4#sh ip bgp ne
+R4#sh ip bgp nei
+R4#sh ip bgp neighbors 10.0.46.2
+BGP neighbor is 10.0.46.2,  remote AS 600, external link
+  BGP version 4, remote router ID 6.6.6.6
+  BGP state = Established, up for 02:11:00
+  Last read 00:00:25, last write 00:00:54, hold time is 180, keepalive interval is 60 seconds
+  Neighbor sessions:
+    1 active, is not multisession capable (disabled)
+  Neighbor capabilities:
+    Route refresh: advertised and received(new)
+    Four-octets ASN Capability: advertised and received
+    Address family IPv4 Unicast: advertised and received
+    Enhanced Refresh Capability: advertised and received
+    Multisession Capability: 
+    Stateful switchover support enabled: NO for session 1
+  Message statistics:
+    InQ depth is 0
+    OutQ depth is 0
+    
+                         Sent       Rcvd
+    Opens:                  1          1
+    Notifications:          0          0
+    Updates:                2          2
+    Keepalives:           145        147
+    Route Refresh:          0          0
+    Total:                148        150
+  Default minimum time between advertisement runs is 30 seconds
+
+ For address family: IPv4 Unicast
+  Session: 10.0.46.2
+  BGP table version 3, neighbor version 3/0
+  Output queue size : 0
+  Index 1, Advertise bit 0
+  1 update-group member
+  Slow-peer detection is disabled
+  Slow-peer split-update-group dynamic is disabled
+                                 Sent       Rcvd
+  Prefix activity:               ----       ----
+    Prefixes Current:               1          1 (Consumes 76 bytes)
+    Prefixes Total:                 1          1
+    Implicit Withdraw:              0          0
+    Explicit Withdraw:              0          0
+    Used as bestpath:             n/a          1
+    Used as multipath:            n/a          0
+
+                                   Outbound    Inbound
+  Local Policy Denied Prefixes:    --------    -------
+          
+R4#sh ip bgp nei
+R4#sh ip bgp neighbors 10.0.46.2 ad
+R4#sh ip bgp neighbors 10.0.46.2 advertised-routes 
+BGP table version is 3, local router ID is 4.4.4.4
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>i 192.168.5.0      1.1.1.1                  0    100      0 500 i
+
+Total number of prefixes 1 
+R4#sh ip bgp neighbors 1.1.1.1 ad                  
+R4#sh ip bgp neighbors 1.1.1.1 advertised-routes 
+BGP table version is 3, local router ID is 4.4.4.4
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal, 
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter, 
+              x best-external, a additional-path, c RIB-compressed, 
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  192.168.6.0      10.0.46.2                0             0 600 i
+

@@ -1,0 +1,7 @@
+OSPF LSA
+Type(1) # sh ip os dat router --------------->sign(O)
+Type(2) # sh ip os dat net----------------------> DR/BDR (Broadcast and Non-Broadcast) sign-O
+Type(3) # sh ip os dat summary------------------------>(OIA)
+Type(4) # sh ip os dat asbr-summary ..................>(Describe to ASBR location)
+Type(5) # sh ip os dat external ........................>(Describe external route from ASBR)
+Type(7) # sh ip os dat nassa-external   ...................> (not adv Type-5 transform Type-7)
