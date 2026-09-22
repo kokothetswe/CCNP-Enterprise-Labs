@@ -1,0 +1,42 @@
+Edge1(config)# ip multicast-routing 
+
+
+
+
+interface Loopback0
+ description router_id
+ ip address 1.1.1.1 255.255.255.255
+ shutdown 
+!         
+interface Ethernet0/0
+ description Local
+ ip address 192.168.1.1 255.255.255.0 
+ ip pim dense-mode
+!         
+interface Ethernet0/1
+ description Edge1_Transist
+ ip address 192.168.255.1 255.255.255.252
+ ip pim dense-mode
+ ip ospf authentication key-chain Edge1
+ ip ospf network point-to-point
+ ip ospf dead-interval 3
+ ip ospf hello-interval 1
+!         
+interface Ethernet0/2
+ no ip address
+ shutdown 
+!         
+interface Ethernet0/3
+ no ip address
+ shutdown 
+!         
+router ospf 1
+ router-id 1.1.1.1
+ network 192.168.1.0 0.0.0.255 area 0
+ network 192.168.255.1 0.0.0.0 area 0
+!         
+router ospf 10
+ passive-interface default
+ no passive-interface Ethernet0/1
+ distribute-list prefix Edge1 in
+!         
