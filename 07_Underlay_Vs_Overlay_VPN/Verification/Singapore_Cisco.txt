@@ -1,0 +1,114 @@
+Singapore_Head#sh ip os ne
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.10.10.9        0   FULL/  -        00:00:35    10.0.12.2       Tunnel0
+Singapore_Head#sh ip os int br
+Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C
+Tu0          10    0               10.0.12.1/30       1000  P2P   1/1
+Et0/1.1      10    0               10.0.0.1/24        10    P2P   0/0
+Singapore_Head#sh run | se r os
+router ospf 10
+ router-id 10.10.10.10
+ network 10.0.0.0 0.0.0.255 area 0
+ network 10.0.12.1 0.0.0.0 area 0
+Singapore_Head#sh run int e0/0
+Building configuration...
+
+Current configuration : 133 bytes
+!
+interface Ethernet0/0
+ description Head_PE
+ ip address 196.127.86.2 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+end
+
+Singapore_Head#sh ip int br | ex unas
+Interface                  IP-Address      OK? Method Status                Protocol
+Ethernet0/0                196.127.86.2    YES NVRAM  up                    up      
+Ethernet0/1.1              10.0.0.1        YES NVRAM  up                    up      
+Loopback0                  10.10.10.10     YES NVRAM  administratively down down    
+NVI0                       196.127.86.2    YES unset  up                    up      
+Tunnel0                    10.0.12.1       YES NVRAM  up                    up      
+
+Singapore_Head#sh crypto ipsec sa 
+
+interface: Tunnel0
+    Crypto map tag: Tunnel0-head-0, local addr 196.127.86.2
+
+   protected vrf: (none)
+   local  ident (addr/mask/prot/port): (196.127.86.2/255.255.255.255/47/0)
+   remote ident (addr/mask/prot/port): (197.168.9.2/255.255.255.255/47/0)
+   current_peer 197.168.9.2 port 500
+     PERMIT, flags={origin_is_acl,}
+    #pkts encaps: 3855, #pkts encrypt: 3855, #pkts digest: 3855
+    #pkts decaps: 5159, #pkts decrypt: 5159, #pkts verify: 5159
+    #pkts compressed: 0, #pkts decompressed: 0
+    #pkts not compressed: 0, #pkts compr. failed: 0
+    #pkts not decompressed: 0, #pkts decompress failed: 0
+    #send errors 0, #recv errors 0
+
+     local crypto endpt.: 196.127.86.2, remote crypto endpt.: 197.168.9.2
+     plaintext mtu 1458, path mtu 1500, ip mtu 1500, ip mtu idb Ethernet0/0
+     current outbound spi: 0x1E4D087(31772807)
+     PFS (Y/N): N, DH group: none
+
+     inbound esp sas:
+      spi: 0x792EB2A1(2033103521)
+        transform: esp-aes esp-sha-hmac ,
+        in use settings ={Transport, }
+        conn id: 3, flow_id: SW:3, sibling_flags 80004000, crypto map: Tunnel0-head-0
+        sa timing: remaining key lifetime (k/sec): (4170773/1089)
+        IV size: 16 bytes
+        replay detection support: Y
+        Status: ACTIVE(ACTIVE)
+
+     inbound ah sas:
+
+     inbound pcp sas:
+
+     outbound esp sas:
+      spi: 0x1E4D087(31772807)
+        transform: esp-aes esp-sha-hmac ,
+        in use settings ={Transport, }
+        conn id: 4, flow_id: SW:4, sibling_flags 80004000, crypto map: Tunnel0-head-0
+        sa timing: remaining key lifetime (k/sec): (4170839/1089)
+        IV size: 16 bytes
+        replay detection support: Y
+        Status: ACTIVE(ACTIVE)
+          
+     outbound ah sas:
+
+     outbound pcp sas:
+Singapore_Head#sh crypto isakmp sa
+IPv4 Crypto ISAKMP SA
+dst             src             state          conn-id status
+196.127.86.2    197.168.9.2     QM_IDLE           1014 ACTIVE
+
+IPv6 Crypto ISAKMP SASingapore_Head#sh ip int br | ex unas
+Interface                  IP-Address      OK? Method Status                Protocol
+Ethernet0/0                196.127.86.2    YES NVRAM  up                    up      
+Ethernet0/1.1              10.0.0.1        YES NVRAM  up                    up      
+Loopback0                  10.10.10.10     YES NVRAM  administratively down down    
+NVI0                       196.127.86.2    YES unset  up                    up      
+Tunnel0                    10.0.12.1       YES NVRAM  up                    up
+
+interface Ethernet0/1.1
+ encapsulation dot1Q 20
+ ip address 10.0.0.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf network point-to-point
+end
+
+
+# show ip int br | ex unas
+# show ip os ne
+# show ip os int br 
+# show run int tun0
+# show run | se cry
+# show cry sess
+# show int tun0
+# show cry ipsec sa
+# show cry isakmp sa
+ping 10.0.12.2 tunnel-dst

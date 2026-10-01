@@ -1,0 +1,58 @@
+Ds1#sh vl br
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    
+10   Norway_Br                        active    
+11   Branch                           active    Et0/2, Et0/3
+999  MGMT_NATIVE                      active    Et0/1
+1002 fddi-default                     act/unsup 
+1003 token-ring-default               act/unsup 
+1004 fddinet-default                  act/unsup 
+1005 trnet-default                    act/unsup 
+Ds1#sh int tr
+
+Port        Mode             Encapsulation  Status        Native vlan
+Et0/0       on               802.1q         trunking      999
+
+Port        Vlans allowed on trunk
+Et0/0       10-11,999
+
+Port        Vlans allowed and active in management domain
+Et0/0       10-11,999
+
+Port        Vlans in spanning tree forwarding state and not pruned
+Et0/0       10-11,999
+Ds1#sh run int e0/2
+Building configuration...
+
+Current configuration : 80 bytes
+!
+interface Ethernet0/2
+ switchport access vlan 11
+ switchport mode access
+end
+Ds1#sh run int e0/0
+Building configuration...
+
+Current configuration : 165 bytes
+!
+interface Ethernet0/0
+ switchport trunk allowed vlan 10,11,999
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport mode trunk
+Ds1#sh run int e0/3
+Building configuration...
+
+Current configuration : 104 bytes
+!
+interface Ethernet0/3
+ switchport access vlan 11
+ switchport mode access
+ spanning-tree portfast
+end
+
+#Show vlan br
+#Show int tr
+#Show run int e0/2 or e0/3 or e0/0
