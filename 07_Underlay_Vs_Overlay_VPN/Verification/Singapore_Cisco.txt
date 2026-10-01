@@ -102,3 +102,13 @@ interface Ethernet0/1.1
 end
 
 
+# show ip int br | ex unas
+# show ip os ne
+# show ip os int br 
+# show run int tun0
+# show run | se cry
+# show cry sess
+# show int tun0
+# show cry ipsec sa
+# show cry isakmp sa
+ping 10.0.12.2 tunnel-dst
