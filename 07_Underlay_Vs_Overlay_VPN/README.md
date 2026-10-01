@@ -2,7 +2,17 @@
 
 # 🌐 Lab 07: Underlay vs. Overlay Network Architecture 
 ### Enterprise Multi-Vendor WAN Transport & Secure GRE/IPsec Tunneling
-https://raw.githubusercontent.com/kokothetswe/CCNP-Enterprise-Labs/refs/heads/kokothetswe-patch-1-1/07_Underlay_Vs_Overlay_VPN/GERoverIPSEC.png
+<div align="center">
+
+
+![Cisco](https://img.shields.io/badge/Cisco-175DDC?style=for-the-badge&logo=cisco&logoColor=white)
+![MikroTik](https://img.shields.io/badge/MikroTik-222222?style=for-the-badge&logo=mikrotik&logoColor=white)
+![IPsec](https://img.shields.io/badge/VPN-GRE%20over%20IPsec-red?style=for-the-badge)
+![Status](https://img.shields.io/badge/Lab%20Status-Completed-success?style=for-the-badge)
+
+</div>
+
+---
 
 </div>
 
@@ -19,7 +29,7 @@ This lab demonstrates the practical design and execution of **Underlay Transport
 ## 📐 2. Network Topology
 
 <div align="center">
-  <img src="./topology.png" alt="Lab Topology" width="850"/>
+  <img src="./topology.png" alt="Lab Topology" width="850"/>https://raw.githubusercontent.com/kokothetswe/CCNP-Enterprise-Labs/refs/heads/kokothetswe-patch-1-1/07_Underlay_Vs_Overlay_VPN/GERoverIPSEC.png
 </div>
 
 ---
