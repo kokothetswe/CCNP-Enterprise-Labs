@@ -41,4 +41,18 @@ Columns: STATE, UPTIME, PH2-TOTAL, REMOTE-ADDRESS
 0  established  1h36m49s          1  196.127.86.2  
 
 
-      
+      [admin@MikroTik] > ip dhcp-server/print
+Columns: NAME, INTERFACE, ADDRESS-POOL, LEASE-TIME
+# NAME   INTERFACE  ADDRESS-POOL  LEASE-TIME
+0 dhcp1  vlan10     dhcp_pool0    30m       
+1 dhcp2  vlan11     dhcp_pool1    30m  
+
+Columns: ADDRESS, NETWORK, INTERFACE
+# ADDRESS          NETWORK       INTERFACE
+0 197.168.9.2/30   197.168.9.0   ether2   
+1 192.168.0.1/24   192.168.0.0   vlan10   
+2 192.168.1.1/24   192.168.1.0   vlan11   
+3 192.168.99.1/28  192.168.99.0  vlan999  
+4 10.0.12.2/30     10.0.12.0     Tunnel-0 
+;;; Router-ID
+5 10.10.10.9/32    10.10.10.0    lo 
