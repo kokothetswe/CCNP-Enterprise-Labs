@@ -1,0 +1,44 @@
+[admin@MikroTik] > /ip route/print
+Flags: D - DYNAMIC; A - ACTIVE; c - CONNECT, s - STATIC, o - OSPF
+Columns: DST-ADDRESS, GATEWAY, DISTANCE
+#     DST-ADDRESS      GATEWAY             DISTANCE
+0  As 0.0.0.0/0        197.168.9.1                1
+  DAo 10.0.0.0/24      10.0.12.1%Tunnel-0       110
+  DAc 192.168.0.0/24   vlan10                     0
+  DAc 192.168.1.0/24   vlan11                     0
+  DAc 192.168.99.0/28  vlan999                    0
+  DAc 10.0.12.0/30     Tunnel-0                   0
+  DAc 197.168.9.0/30   ether2                     0
+  DAc 10.10.10.0/32    lo                         0
+[admin@MikroTik] > /interface/print 
+Flags: R - RUNNING; S - SLAVE
+Columns: NAME, TYPE, ACTUAL-MTU, L2MTU, MAC-ADDRESS
+#    NAME      TYPE        ACTUAL-MTU  L2MTU  MAC-ADDRESS      
+0 RS ether1    ether             1500         50:DF:BD:01:FE:00
+1 R  ether2    ether             1500         50:DF:BD:01:FE:01
+2 R  ether3    ether             1500         50:DF:BD:01:FE:02
+3 R  ether4    ether             1500         50:DF:BD:01:FE:03
+4 R  Tunnel-0  gre-tunnel        1400  65535                   
+5 R  bridge1   bridge            1500  65535  50:DF:BD:01:FE:00
+6 R  lo        loopback         65536         00:00:00:00:00:00
+7 R  vlan10    vlan              1500  65531  50:DF:BD:01:FE:00
+8 R  vlan11    vlan              1500  65531  50:DF:BD:01:FE:00
+9 R  vlan999   vlan              1500  65531  50:DF:BD:01:FE:00
+[admin@MikroTik] > /interface/gre/print
+Flags: X - disabled; R - running 
+ 0  R name="Tunnel-0" mtu=1400 actual-mtu=1400 local-address=197.168.9.2 
+      remote-address=196.127.86.2 keepalive=5s,10 dscp=inherit 
+      clamp-tcp-mss=yes dont-fragment=no allow-fast-path=yes 
+[admin@MikroTik] > routing/ospf/neighbor/print 
+Flags: V - virtual; D - dynamic 
+ 0  D instance=ospf-instance-10 area=Area0 address=10.0.12.1 
+      router-id=10.10.10.10 state="Full" state-changes=6 adjacency=1h35m19s 
+      timeout=40s 
+
+[admin@MikroTik] > /ip/ipsec/active-peers/print 
+Columns: STATE, UPTIME, PH2-TOTAL, REMOTE-ADDRESS
+#  STATE        UPTIME    PH2-TOTAL  REMOTE-ADDRESS
+0  established  1h36m49s          1  196.127.86.2  
+
+
+      
