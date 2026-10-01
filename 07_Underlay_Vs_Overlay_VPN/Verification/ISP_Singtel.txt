@@ -39,3 +39,7 @@ RPKI validation codes: V valid, I invalid, N Not found
  *>  9.9.9.9/32       0.0.0.0                  0         32768 i
  *>  196.127.86.0/30  0.0.0.0                  0         32768 i
  *>  197.168.9.0/30   200.17.78.101            0             0 1090 i
+
+# Show ip bgp sum
+# Show ip bgp 
+# Show ip bgp nei 200.17.78.101 adv
